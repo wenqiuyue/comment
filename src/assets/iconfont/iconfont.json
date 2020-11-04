@@ -1,0 +1,289 @@
+{
+  "id": "",
+  "name": "",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "66517123",
+      "name": "评分等级Rating (4)",
+      "font_class": "pingfendengjiRating4",
+      "unicode": "e6b3",
+      "unicode_decimal": 59059
+    },
+    {
+      "icon_id": "66502968",
+      "name": "Agriculture",
+      "font_class": "Agriculture",
+      "unicode": "e619",
+      "unicode_decimal": 58905
+    },
+    {
+      "icon_id": "66502969",
+      "name": "Bathroom Products",
+      "font_class": "BathroomProducts",
+      "unicode": "e61a",
+      "unicode_decimal": 58906
+    },
+    {
+      "icon_id": "66502970",
+      "name": "Chemistry and Chemical Industry",
+      "font_class": "ChemistryandChemicalIndustry",
+      "unicode": "e61b",
+      "unicode_decimal": 58907
+    },
+    {
+      "icon_id": "66502971",
+      "name": "Apparel",
+      "font_class": "Apparel",
+      "unicode": "e61c",
+      "unicode_decimal": 58908
+    },
+    {
+      "icon_id": "66502972",
+      "name": "Consumer Electronic",
+      "font_class": "ConsumerElectronic",
+      "unicode": "e61d",
+      "unicode_decimal": 58909
+    },
+    {
+      "icon_id": "66502973",
+      "name": "Energy",
+      "font_class": "Energy",
+      "unicode": "e61e",
+      "unicode_decimal": 58910
+    },
+    {
+      "icon_id": "66502974",
+      "name": "Electrical Equipment",
+      "font_class": "ElectricalEquipment",
+      "unicode": "e61f",
+      "unicode_decimal": 58911
+    },
+    {
+      "icon_id": "66502975",
+      "name": "Fabrication services",
+      "font_class": "Fabricationservices",
+      "unicode": "e620",
+      "unicode_decimal": 58912
+    },
+    {
+      "icon_id": "66502976",
+      "name": "Fashion accessories",
+      "font_class": "Fashionaccessories",
+      "unicode": "e621",
+      "unicode_decimal": 58913
+    },
+    {
+      "icon_id": "66502977",
+      "name": "Construction",
+      "font_class": "Construction",
+      "unicode": "e622",
+      "unicode_decimal": 58914
+    },
+    {
+      "icon_id": "66502978",
+      "name": "furniture Hardware",
+      "font_class": "furnitureHardware",
+      "unicode": "e623",
+      "unicode_decimal": 58915
+    },
+    {
+      "icon_id": "66502979",
+      "name": "Gift & crafts",
+      "font_class": "Giftcrafts",
+      "unicode": "e624",
+      "unicode_decimal": 58916
+    },
+    {
+      "icon_id": "66502980",
+      "name": "Food and drink",
+      "font_class": "Foodanddrink",
+      "unicode": "e625",
+      "unicode_decimal": 58917
+    },
+    {
+      "icon_id": "66502981",
+      "name": "Home and garden",
+      "font_class": "Homeandgarden",
+      "unicode": "e626",
+      "unicode_decimal": 58918
+    },
+    {
+      "icon_id": "66502982",
+      "name": "Furniture",
+      "font_class": "Furniture",
+      "unicode": "e627",
+      "unicode_decimal": 58919
+    },
+    {
+      "icon_id": "66502983",
+      "name": "Home",
+      "font_class": "Home",
+      "unicode": "e628",
+      "unicode_decimal": 58920
+    },
+    {
+      "icon_id": "66502984",
+      "name": "Home Appliance",
+      "font_class": "HomeAppliance",
+      "unicode": "e629",
+      "unicode_decimal": 58921
+    },
+    {
+      "icon_id": "66502985",
+      "name": "Kitchen equipment",
+      "font_class": "Kitchenequipment",
+      "unicode": "e62a",
+      "unicode_decimal": 58922
+    },
+    {
+      "icon_id": "66502986",
+      "name": "Hotel Supplies",
+      "font_class": "HotelSupplies",
+      "unicode": "e62b",
+      "unicode_decimal": 58923
+    },
+    {
+      "icon_id": "66502987",
+      "name": "Luggage, Bags & Cases",
+      "font_class": "LuggageBagsCases",
+      "unicode": "e62c",
+      "unicode_decimal": 58924
+    },
+    {
+      "icon_id": "66502988",
+      "name": "Makeup",
+      "font_class": "Makeup",
+      "unicode": "e62d",
+      "unicode_decimal": 58925
+    },
+    {
+      "icon_id": "66502989",
+      "name": "Health and medical",
+      "font_class": "Healthandmedical",
+      "unicode": "e62e",
+      "unicode_decimal": 58926
+    },
+    {
+      "icon_id": "66502990",
+      "name": "Beauty",
+      "font_class": "Beauty",
+      "unicode": "e62f",
+      "unicode_decimal": 58927
+    },
+    {
+      "icon_id": "66502991",
+      "name": "Office Supplies",
+      "font_class": "OfficeSupplies",
+      "unicode": "e630",
+      "unicode_decimal": 58928
+    },
+    {
+      "icon_id": "66502992",
+      "name": "Lights",
+      "font_class": "Lights",
+      "unicode": "e631",
+      "unicode_decimal": 58929
+    },
+    {
+      "icon_id": "66502993",
+      "name": "Machinery",
+      "font_class": "Machinery",
+      "unicode": "e632",
+      "unicode_decimal": 58930
+    },
+    {
+      "icon_id": "66502994",
+      "name": "Packaging",
+      "font_class": "Packaging",
+      "unicode": "e633",
+      "unicode_decimal": 58931
+    },
+    {
+      "icon_id": "66502995",
+      "name": "Minerals and Metallurgy",
+      "font_class": "MineralsandMetallurgy",
+      "unicode": "e634",
+      "unicode_decimal": 58932
+    },
+    {
+      "icon_id": "66502996",
+      "name": "Rubber and plastic",
+      "font_class": "Rubberandplastic",
+      "unicode": "e635",
+      "unicode_decimal": 58933
+    },
+    {
+      "icon_id": "66502997",
+      "name": "Watches, jewelry, glasses",
+      "font_class": "Watchesjewelryglasses",
+      "unicode": "e636",
+      "unicode_decimal": 58934
+    },
+    {
+      "icon_id": "66502998",
+      "name": "Service equipment",
+      "font_class": "Serviceequipment",
+      "unicode": "e637",
+      "unicode_decimal": 58935
+    },
+    {
+      "icon_id": "66502999",
+      "name": "Textiles & Leather Products",
+      "font_class": "TextilesLeatherProducts",
+      "unicode": "e638",
+      "unicode_decimal": 58936
+    },
+    {
+      "icon_id": "66503000",
+      "name": "Safety and protection",
+      "font_class": "Safetyandprotection",
+      "unicode": "e639",
+      "unicode_decimal": 58937
+    },
+    {
+      "icon_id": "66503001",
+      "name": "Toys",
+      "font_class": "Toys",
+      "unicode": "e63a",
+      "unicode_decimal": 58938
+    },
+    {
+      "icon_id": "66503002",
+      "name": "Shoes & accessories",
+      "font_class": "Shoesaccessories",
+      "unicode": "e63b",
+      "unicode_decimal": 58939
+    },
+    {
+      "icon_id": "66503003",
+      "name": "Wigs",
+      "font_class": "Wigs",
+      "unicode": "e63c",
+      "unicode_decimal": 58940
+    },
+    {
+      "icon_id": "66503004",
+      "name": "Sports & entertainment",
+      "font_class": "Sportsentertainment",
+      "unicode": "e63d",
+      "unicode_decimal": 58941
+    },
+    {
+      "icon_id": "66503005",
+      "name": "Tools and hardware",
+      "font_class": "Toolsandhardware",
+      "unicode": "e63e",
+      "unicode_decimal": 58942
+    },
+    {
+      "icon_id": "66503006",
+      "name": "Vehicles & Accessories",
+      "font_class": "VehiclesAccessories",
+      "unicode": "e63f",
+      "unicode_decimal": 58943
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+export default [
+	//首页
+  {
+		path: '/',
+		name: 'home',
+		component: () => import('../../views/home/home.vue'),
+	},
+	//分类页面
+	{
+		path: '/categories',
+		name: 'categories',
+		component: () => import('../../views/categories/categories.vue'),
+	},
+	//产品列表
+	{
+		path: '/product-list',
+		name: 'product-list',
+		component: () => import('../../views/product-list/product-list.vue'),
+	},
+	//产品详情
+	{
+		path: '/product-info',
+		name: 'product-info',
+		component: () => import('../../views/product-info/product-info.vue'),
+	},
+]
