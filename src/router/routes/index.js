@@ -23,4 +23,16 @@ export default [
 		name: 'product-info',
 		component: () => import('../../views/product-info/product-info.vue'),
 	},
+	//写评论
+	{
+		path: '/write-review',
+		name: 'write-review',
+		component: () => import('../../views/write-review/write-review.vue'),
+	},
+	//比较
+	{
+		path: '/compare',
+		name: 'compare',
+		component: () => import('../../views/compare/compare.vue'),
+	},
 ]

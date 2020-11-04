@@ -2,7 +2,7 @@
 	<svg
 		class="icon"
 		aria-hidden="true"
-		:style="{ height: `${size}rem`, width: `${size}rem` }"
+		:style="{ height: `${size}rem`, width: `${size}rem`, color:color }"
 		@click="$emit('click')"
 	>
 		<use :xlink:href="`#${value}`" />
@@ -15,7 +15,7 @@ export default {
 	props: {
 		value: { type: String, default: null },
 		size: { type: Number, default: 1 },
-		color: { type: [Array, String], default: null }
+		color: { type: String, default: null }
 	},
 };
 </script>
