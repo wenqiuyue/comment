@@ -19,6 +19,19 @@
         <el-button class="companies" type="gone" plain>For companies</el-button>
       </div>
     </div>
+    <div class="phone_header" v-if="false">
+      <div class="p_logo">
+        <span @click="goHome">
+          <el-image
+            style="width: 10rem"
+            :src="require('../assets/logo1.png')"
+            fit="contain">
+          </el-image>
+        </span>
+       
+      </div>
+       <i class="el-icon-delete"></i>
+    </div>
   </div>
 </template>
 <script>
@@ -93,7 +106,8 @@ export default {
       .companies{
         margin-left: 2rem;
         border: 2px solid #ffffff;
-        font-weight: bold;    
+        font-weight: bold;
+        display: initial;    
       }
       .el-button--gone:hover
       {
@@ -104,6 +118,61 @@ export default {
       .el-button--gone{
         background: @main-color;
         color: #ffffff;
+      }
+    }
+  }
+  .phone_header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.875rem;
+    font-weight: bold;
+    height: 72px;
+    padding:0 20px;
+    color: #ffffff;
+    max-width: 1206px;
+    margin: 0 auto;
+    .p_logo{
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+  @media all and (max-width: 1024px) {
+  .h_header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.875rem;
+    font-weight: bold;
+    height: 72px;
+    padding:0 20px;
+    color: #ffffff;
+    max-width: 1206px;
+    margin: 0 auto;
+    .logo{
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      .l_logo{
+        cursor: pointer;
+      }
+      .search{
+        margin-left: 32px;
+        display: flex;
+        flex-direction: row;
+        button{
+          margin-left: 5px;
+        }
+      }
+    }
+      .header_button{
+        .companies{
+          display: none;
+        }
       }
     }
   }

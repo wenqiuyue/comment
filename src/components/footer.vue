@@ -28,4 +28,13 @@ export default {
       }
     }
   }
+  	@media all and (max-width: 1024px) {
+      .footer{
+        padding: 2rem 0;
+        .b_share{
+          font-size: 1.125rem;
+          margin-top: 0;
+        }
+      }
+    }
 </style>

@@ -29,7 +29,8 @@
                 :colors="['#FF3722', '#FFCE00','#00B67A']">
               </el-rate>
               <span class="score_num">836 reviews</span>
-              <el-button type="primary" size="medium" plain>$60 one time fee</el-button>
+              <el-tag type="primary" size="small">$60 one time fee</el-tag>
+              <el-tag type="success" size="small">10% Off</el-tag>
             </div>
             <p class="l_c_r_describ">Test Description Test Description Test Description Test Description Test Description Test Description Test Description Test Description Test Description</p>
           </div>
@@ -133,8 +134,8 @@ export default {
               color: #454554;
               font-size: 0.875rem;
             }
-            button{
-              margin-left: 5px;
+            .el-tag{
+              margin-left: 6px;
             }
           }
           .l_c_r_describ{

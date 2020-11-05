@@ -10,22 +10,66 @@
         <table class="main_table">
           <tbody>
             <tr>
-              <th class="m_th">1</th>
-              <th>1</th>
-              <th>1</th>
-              <th>1</th>
-              <th>1</th>
+              <th class="m_th">Products</th>
+              <th v-for="item in 4" :key="item">
+                <span>Steam</span>
+              </th>
             </tr>
             <tr>
-              <th class="m_th">1</th>
-              <th>1</th>
-              <th>1</th>
-              <th>1</th>
-              <th>1</th>
+              <td class="m_th">COVER</td>
+              <td v-for="item in 4" :key="item">
+                <el-image
+                  src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"
+                  fit="cover">
+                </el-image>
+              </td>
+            </tr>
+            <tr>
+              <td class="m_th">RELEASE TIME</td>
+              <td v-for="item in 4" :key="item">January 2002</td>
+            </tr>
+            <tr>
+              <td class="m_th">PRICE</td>
+              <td v-for="item in 4" :key="item">$60 one time fee</td>
+            </tr>
+            <tr>
+              <td class="m_td_icon">
+                <svg-icon value="icon-bianpinghuatubiaosheji-"></svg-icon>
+                <span>Reviews</span>
+              </td>
+              <td v-for="item in 4" :key="item">2</td>
+            </tr>
+            <tr>
+              <td class="m_td_icon">
+                <svg-icon value="icon-xihuan"></svg-icon>
+                <span>Likes</span>
+              </td>
+              <td v-for="item in 4" :key="item">391</td>
+            </tr>
+            <tr>
+              <td class="m_th">Commission</td>
+              <td v-for="item in 4" :key="item">10% recurring commissions</td>
+            </tr>
+            <!-- <tr>
+              <td class="m_th"></td>
+              <td colspan="4">&nbsp;</td>
+            </tr> -->
+            <tr>
+              <td class="m_th">Strong</td>
+              <td v-for="item in 4" :key="item">C</td>
+            </tr>
+            <tr>
+              <td class="m_th">Skill</td>
+              <td v-for="item in 4" :key="item">S</td>
+            </tr>
+            <tr>
+              <td class="m_th">Speed</td>
+              <td v-for="item in 4" :key="item">S</td>
             </tr>
           </tbody>
         </table>
       </div>
+      <footer-com></footer-com>
     </div>
   </div>
 </template>
@@ -65,17 +109,52 @@ export default {
         box-shadow: 0px 3px 20px -3px rgba(0,0,0,0.25);
         margin-top: 10px;
         width: 100%;
-        border-collapse: separate;
+        tr{
+          border-bottom: 1px solid #ddd;;
+        }
         th{
           color: #666;
-          padding: .7rem;
+          padding: 7px;
           line-height: 1.6;
-          font-size: 20px;
+          font-size: 19px;
+          text-align: center;
+          font-weight: normal;
+          span{
+            color:#409eff;
+            border-bottom: 1px dashed  #409eff;
+            cursor: pointer;
+            &:hover{
+              color: #60bf39;
+            }
+          }
         }
         .m_th{
           vertical-align: middle;
           border-left: 1px dashed #ddd;
           border-right: 1px dashed #ddd;
+        }
+        .m_td_icon{
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-left: 1px dashed #ddd;
+          border-right: 1px dashed #ddd;
+          span{
+            margin-left: 3px;
+          }
+        }
+        td{
+          border-top: 1px solid #ddd;
+          text-align: center;
+          padding: 7px;
+          line-height: 1.6;
+          color: #666;
+          font-size: 16px;
+          .el-image{
+            max-width: 200px;
+            max-height: 130px;
+            margin: 16px 0px;
+          }
         }
       }
     }

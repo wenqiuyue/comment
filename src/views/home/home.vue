@@ -267,4 +267,97 @@ export default {
     }
   }
 }
+	@media all and (max-width: 1024px) {
+    .h_home{
+      height: calc(100% - 72px);
+      overflow: auto;
+      .banner{
+        background: url("~@/assets/images/banner.png") no-repeat;
+        height: auto;
+        .c_banner{
+          padding: 1rem;
+          width: 90%;
+          margin-left: auto;
+          margin-right: auto;
+          .title_1{
+            margin-bottom: 0.875rem;
+            font-size: 1.7rem;
+          }
+          .title_2{
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+          }
+          .title_3{
+            font-size: 1rem;
+            margin-bottom: 1rem;
+          }
+          .b_search{
+            margin-bottom: 2rem;
+            .s_input{
+              margin-right: 0.1rem;
+              /deep/.el-input__inner{
+                height: 3rem;
+                font-size: 1rem;
+              }
+            }
+            .s_button{
+              font-size: 1rem;
+            }
+
+          }
+          .b_type{
+            padding-top: 0.2rem;
+            .type_card{
+              width: 17%;
+              margin-bottom: 0;
+              box-shadow: 0 2px 2px 0 rgba(0,0,50,0.04);
+              padding:0.5rem 0.2rem 0.2rem 0.2rem;
+              .type_card_text{
+                font-size: 0.75rem;
+                line-height: 1rem;
+              }
+              .type_card_icon{
+                margin-bottom: 0.1rem;
+              }
+            }
+          }
+        }
+      }
+      .recent_reviews{
+        .r_r_title{
+          font-size: 1.25rem;
+          padding:2rem 0;
+        }
+        .r_r_reviews{
+          .r_r_r_card{
+            padding-bottom: 0.8rem;
+            margin-right: 0.5rem;
+            width: 70%;
+            .r_r_r_c_card{
+              margin-bottom: 0.5rem;
+              padding: 1.1rem 0.5rem;
+              width: calc(100% - 1rem);
+              .c_title{
+                .c_t_rate{
+                  margin-left: 0.5rem;
+                }
+              }
+            }
+          }
+        }
+      }
+      .be_heard{
+        padding: 2rem 1rem 2rem;
+        .heard_title{
+          font-size: 2rem;
+          margin-bottom: 0;
+        }
+        .heard_text{
+          margin-bottom: 1rem;
+          font-size: 1rem;
+          line-height: 1.75rem;
+        }
+      }
+    }
+	}
 </style>
