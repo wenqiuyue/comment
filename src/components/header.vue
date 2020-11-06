@@ -10,8 +10,8 @@
           </el-image>
         </span>
         <div class="search" v-if="isShowSearch">
-          <el-input v-model="searchData" placeholder="请输入内容"></el-input>
-          <el-button type="primary" icon="el-icon-search">搜索</el-button>
+          <el-input v-model="searchData" placeholder="Search for a company or category…"></el-input>
+          <el-button type="primary" icon="el-icon-search">Search</el-button>
         </div>
       </div>
       <div class="header_button">
@@ -19,8 +19,8 @@
         <el-button class="companies" type="gone" plain>For companies</el-button>
       </div>
     </div>
-    <div class="phone_header" v-if="false">
-      <div class="p_logo">
+    <div class="phone_header">
+      <div class="p_logo" v-if="!isPhoneSearch">
         <span @click="goHome">
           <el-image
             style="width: 10rem"
@@ -28,9 +28,24 @@
             fit="contain">
           </el-image>
         </span>
-       
       </div>
-       <i class="el-icon-delete"></i>
+      <div class="p_icon" v-if="!isPhoneSearch">
+        <i class="p_h_icon el-icon-search" @click="isPhoneSearch=true"></i>
+        <el-dropdown trigger="click" @command="handleCommand">
+          <i class="p_h_icon el-icon-menu"></i>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item command="1">Categories</el-dropdown-item>
+            <el-dropdown-item command="2">For companies</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+      </div>
+      <el-input
+        v-else
+        placeholder="Search for a company or category…"
+        v-model="searchData">
+        <el-button type="primary" slot="append" size="mini">Search</el-button>
+        <i slot="prefix" class="el-input__icon el-icon-back" style="font-size:1.1rem" @click="isPhoneSearch=false"></i>
+      </el-input>
     </div>
   </div>
 </template>
@@ -47,6 +62,7 @@ export default {
     return {
       activeIndex: '1',
       searchData:null, //搜索
+      isPhoneSearch:false
     }
   },
   methods:{
@@ -54,15 +70,21 @@ export default {
      * 去往分类页面
      */
     goCategories(){
-      this.isShowSearch=true;
       this.$router.push({ path: '/categories'});
     },
     /**
      * 去往首页
      */
     goHome(){
-      this.isShowSearch=false;
       this.$router.push({ path: '/'});
+    },
+    /**
+     * 手机模式下拉菜单触发
+     */
+    handleCommand(command){
+      if(command==1){
+        this.goCategories();
+      }
     }
   }
 }
@@ -122,7 +144,7 @@ export default {
     }
   }
   .phone_header{
-    display: flex;
+    display: none;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
@@ -133,47 +155,20 @@ export default {
     color: #ffffff;
     max-width: 1206px;
     margin: 0 auto;
-    .p_logo{
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
+    .p_icon{
+      .p_h_icon{
+        font-size: 1.3rem;
+        margin-left: 1rem;
+        color: #ffffff;
+      }
     }
   }
   @media all and (max-width: 1024px) {
-  .h_header{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 0.875rem;
-    font-weight: bold;
-    height: 72px;
-    padding:0 20px;
-    color: #ffffff;
-    max-width: 1206px;
-    margin: 0 auto;
-    .logo{
+    .phone_header{
       display: flex;
-      flex-direction: row;
-      align-items: center;
-      .l_logo{
-        cursor: pointer;
-      }
-      .search{
-        margin-left: 32px;
-        display: flex;
-        flex-direction: row;
-        button{
-          margin-left: 5px;
-        }
-      }
     }
-      .header_button{
-        .companies{
-          display: none;
-        }
-      }
+    .h_header{
+      display: none;
     }
   }
 }

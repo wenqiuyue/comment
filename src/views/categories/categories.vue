@@ -10,7 +10,7 @@
     </div>
     <div class="c_c_categories">
       <el-row :gutter="20">
-        <el-col :span="8">
+        <el-col :span="8" :xs="0">
           <div class="left_categories">
             <h3>View Category</h3>
             <ul>
@@ -18,7 +18,7 @@
             </ul>
           </div>
         </el-col>
-        <el-col :span="16">
+        <el-col :span="16" :xs="24">
           <div class="right_categories">
             <el-row :gutter="20" v-for="(item,index) in 8" :key="index" class="right_row">
               <el-col :span="8"><div class="r_left_categories"><span>Animals & Pets</span></div></el-col>
@@ -144,4 +144,40 @@ export default {
     }
   }
 }
+	@media all and (max-width: 1024px) {
+    .c_categories{
+      .categories_top{
+        .c_t_container{
+          padding: 0.8rem 1rem;
+          h2{
+            font-size: 1.1rem;
+          }
+          h5{
+            font-size: 0.875rem;
+          }
+        }
+      }
+      .c_c_categories{
+        padding: 0.5rem;
+        .right_categories{
+          padding: 1.5rem 1rem;
+          .right_row{
+            margin-bottom: 1rem;
+            .r_left_categories{
+              font-size: 1rem;
+            }
+            .r_right_categories{
+              padding-bottom: 0.3rem;
+              line-height: 1.5rem;
+              span{
+                flex-basis: 50%;
+                margin-bottom: 8px;
+                font-size: 0.75rem;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 </style>

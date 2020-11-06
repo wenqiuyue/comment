@@ -182,5 +182,44 @@ export default {
       }
     }
   }
+  @media all and (max-width: 1024px) {
+    .w_write-review{
+      .write-review_top{
+        .t_container{
+          padding: 1rem 0.9rem;
+          .t_c_right_info{
+            margin-left: 0.7rem;
+            h2{
+              font-size: 1.17em;
+            }
+            h5{
+              font-size: 0.875rem;
+            }
+          }
+        }
+      }
+      .write-review_main{
+        margin: 0.7rem auto;
+        padding: 1.5rem 1rem 0.2rem;
+        h2{
+          font-size: 1.1rem;
+        }
+        .r_rate{
+          margin: 0.5rem 0 1.2rem 0;
+          /deep/.icon-pingfendengjiRating4{
+            font-size: 1.6rem;
+          }
+        }
+        .form_item{
+          display: flex;
+          flex-direction: row;
+          width: 49%;
+          /deep/.el-form-item__label{
+            width: 85% !important;
+          }
+        }
+      }
+    }
+  }
 }
 </style>

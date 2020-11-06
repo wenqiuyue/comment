@@ -12,9 +12,8 @@
       <div class="p_product-list_container">
         <div class="list_card" v-for="item in 8" :key="item">
           <el-image
-            style="width: 100px; height: 100px"
             src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"
-            fit="cover">
+            >
           </el-image>
           <div class="list_card_right">
             <div>
@@ -106,6 +105,10 @@ export default {
           padding: 24px 10px 24px 40px;
           display: flex;
           flex-direction: row;
+          .el-image{
+            width: 100px;
+            height: 100px;
+          }
         }
         .list_card_right{
           width: calc(100% - 132px);
@@ -146,6 +149,72 @@ export default {
             overflow: hidden;
             text-overflow: ellipsis;
             -webkit-box-orient: vertical;
+          }
+        }
+      }
+    }
+    @media all and (max-width: 1024px) {
+      .p_product-list{
+        .p_product-list_top{
+          .p_l_t_container{
+            padding: 0.8rem 0.8rem;
+            h2{
+              margin: 0.3rem 0 0 0;
+              font-size: 1.25rem;
+            }
+            h5{
+              margin: 0.3rem 0 0 0;
+              font-size: 0.875rem;
+            }
+            .return{
+              span{
+                font-size: 0.875rem;
+              }
+            }
+          }
+        }
+        .p_product-list_container{
+          min-height: calc(100% - 158px);
+          max-width: 97%;
+          padding: 0.5rem 0;
+          .list_card{
+            box-shadow: 0 2px 3px 0 rgba(0, 0, 50, 0.12);
+            margin-bottom: 0.5rem;
+            padding: 0.6rem 0.3rem 0.4rem 0.5rem;
+            .el-image{
+              width: 80px;
+              height: 80px;
+            }
+          }
+          .list_card_right{
+            width: calc(100% - 90px);
+            padding-left: 10px;
+            .l_c_r_title{
+              font-size: 1rem;
+            }
+            .l_c_r_score{
+              margin-top: 0.3rem;
+              display: flex;
+              flex-direction: row;
+              flex-flow: row wrap;
+              align-items: center;
+              /deep/.icon-pingfendengjiRating4{
+                font-size: 1rem;
+              }
+              .score_num{
+                margin:0 5px;
+                font-size: 0.75rem;
+              }
+              .el-tag{
+                margin-left:0;
+                margin-right: 5px;
+                margin-top: 5px;
+              }
+            }
+            .l_c_r_describ{
+              font-size: 0.8rem;
+              margin: 0.5rem 0;
+            }
           }
         }
       }

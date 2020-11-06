@@ -6,7 +6,6 @@
         <div class="p_info_t_container">
           <div class="left_container">
             <el-image
-              style="width: 180px; height: 100px"
               src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"
               fit="cover">
             </el-image>
@@ -46,7 +45,7 @@
       </div>
       <div class="p_p-info_main">
         <el-row :gutter="20">
-          <el-col :span="16">
+          <el-col :span="16" :xs="24">
             <div class="left_main_introduce">
               <div class="introduce_title">
                 <svg-icon value="icon--1" :size="1.8"></svg-icon>
@@ -151,7 +150,7 @@ I was able to get back my all.
               </div>
             </div> -->
           </el-col>
-          <el-col :span="8">
+          <el-col :span="8" :xs="24">
             <div class="right_discount">
               <h3>$60 one time fee</h3>
               <div class="r_d_main">
@@ -307,6 +306,10 @@ export default {
           .left_container{
             display: flex;
             flex-direction: row;
+            .el-image{
+                width: 180px;
+                height: 100px;
+              }
             .left_c_info{
               margin-left: 24px;
               /deep/.icon-pingfendengjiRating4{
@@ -772,6 +775,127 @@ export default {
             display: flex;
             justify-content: space-between;
             align-items: center;
+          }
+        }
+      }
+    }
+  }
+  @media all and (max-width: 1024px) {
+    .p_product-info{
+      .p_product-info_top{
+        .p_info_t_container{
+            padding: 1.25rem 1rem;
+            flex-direction: column;
+            .left_container{
+              .el-image{
+                width: 80px;
+                height: 80px;
+              }
+              .left_c_info{
+                margin-left: 1.2rem;
+                /deep/.icon-pingfendengjiRating4{
+                  font-size: 1.6rem;
+                }
+                h2{
+                margin: 0;
+                font-size: 1.25rem;
+                }
+                h5{
+                  margin: 0.3rem 0;
+                  font-size: 0.875rem;
+                }
+              }
+            }
+            .right_container{
+              display: flex;
+              flex-direction: column;
+              margin-top: 1.5rem;
+              .r_c_operation_group{
+                .r_c_operation{
+                  margin-right: 2rem;
+                }
+              }
+              button{
+                width: 100%;
+                margin-top: 0.7rem;
+                margin-left: 0;
+              }
+            }
+          }
+      }
+      .p_p-info_main{
+        padding: 0.6rem 0.3rem;
+        .left_main_introduce{
+          padding: 1.5rem 1.6rem;
+          margin-bottom: 0.75rem;
+          .more{
+            span{
+              font-size: 0.8rem;
+            }
+          }
+        }
+        .left_main_top{
+          padding: 1.3rem 1.4rem;
+          margin-bottom: 0.75rem;
+          .top_left{
+            .w_text{
+              font-size: 0.875rem;
+              margin-left: 5px;
+            }
+          }
+          /deep/.icon-pingfendengjiRating4{
+            font-size: 1.1rem;
+          }
+        }
+        .left_main_review{
+          padding: 1.3rem 1.5rem;
+        }
+        .left_main_review_card{
+          padding: 1.3rem 1.5rem;
+          margin-bottom: 0.5rem;
+          .card_user{
+            padding-bottom: 1rem;
+          }
+          .score_date{
+            padding: 0.875rem 0;
+            /deep/.icon-pingfendengjiRating4{
+              font-size: 1.2rem;
+            }
+            .date{
+              font-size: 0.875rem;
+            }
+          }
+          .card_text{
+            padding-bottom: 1rem;
+            font-size: 0.875rem;
+          }
+          .card_bottom{
+            padding-top: 0.6rem;
+          }
+        }
+        .left_page{
+          background: #ffffff;
+          padding: 5px 0;
+        }
+        .right_Informations{
+          .r_r_Informations{
+            padding: 8px 15px 0 15px;
+            .c_row{
+              .card_right{
+                .c_r_span{
+                  font-size: 0.75rem;
+                }
+              }
+            }
+          }
+        }
+        .right_discount{
+          margin: 0.75rem 0;
+          h3{
+            padding: 0.75rem 0.875rem;
+          }
+          .r_d_main{
+            padding-top: 1rem;
           }
         }
       }
