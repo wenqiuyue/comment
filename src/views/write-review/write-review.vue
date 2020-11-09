@@ -57,7 +57,9 @@
               <el-input v-model="ruleForm.name" placeholder="Email"></el-input>
             </el-form-item>
             <el-form-item prop="name" class="form_item">
-              <el-input v-model="ruleForm.name" placeholder="1+8=?"></el-input>
+              <el-input v-model="ruleForm.name" placeholder="Verification Code">
+                <validate-code slot="append" @input="getCode" ></validate-code>
+              </el-input>
             </el-form-item>
           </div>
           <el-form-item>
@@ -93,6 +95,12 @@ export default {
     }
   },
   methods:{
+    /**
+     * 获取验证码
+     */
+    getCode(code){
+      console.log(code)
+    },
     handleAvatarSuccess(res, file){
       this.imageUrl = URL.createObjectURL(file.raw);
     },
@@ -178,6 +186,9 @@ export default {
         width: 48%;
         /deep/.el-form-item__label{
           width: 85% !important;
+        }
+        /deep/.el-input-group__append{
+          padding: 0;
         }
       }
     }

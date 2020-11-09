@@ -1,39 +1,42 @@
 <template>
-  <div class="product-list">
-    <header-com></header-com>
+  <div class="product-list" v-loading="loading">
+    <header-com :isRouter="false" @freshData="getQuerySearch"></header-com>
     <div class="p_product-list">
       <div class="p_product-list_top">
         <div class="p_l_t_container">
-          <div class="return"><span><i class="el-icon-arrow-left"></i>Animals & Pets</span></div>
-          <h2>2 result(s) for "WHB Product"</h2>
+          <div class="return" v-if="!searchWord"><span><i class="el-icon-arrow-left"></i>Animals & Pets</span></div>
+          <h2>{{`2 result(s) for "${searchWord}"`}}</h2>
           <h5>Find the right products for you and your internet business.</h5>
         </div>
       </div>
       <div class="p_product-list_container">
-        <div class="list_card" v-for="item in 8" :key="item">
-          <el-image
-            src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"
-            >
-          </el-image>
-          <div class="list_card_right">
-            <div>
-              <span class="l_c_r_title" @click="handleProductInfo">Paw Print Genetics</span>
+        <div v-if="proList.length>0">
+          <div class="list_card" v-for="(item,index) in proList" :key="index" @click="handleProductInfo">
+            <el-image
+              :src="item.Cover"
+              >
+            </el-image>
+            <div class="list_card_right">
+              <div>
+                <span class="l_c_r_title" @click="handleProductInfo">Paw Print Genetics</span>
+              </div>
+              <div class="l_c_r_score">
+                <el-rate
+                  class="c_t_rate"
+                  v-model="value"
+                  :icon-classes="iconClasses"
+                  void-icon-class="iconfont icon-pingfendengjiRating4"
+                  :colors="['#FF3722', '#FFCE00','#00B67A']">
+                </el-rate>
+                <span class="score_num">836 reviews</span>
+                <el-tag type="primary" size="small">${{item.Price}} one time fee</el-tag>
+                <el-tag type="success" size="small">10% Off</el-tag>
+              </div>
+              <p class="l_c_r_describ">{{item.Description}}</p>
             </div>
-            <div class="l_c_r_score">
-              <el-rate
-                class="c_t_rate"
-                v-model="value"
-                :icon-classes="iconClasses"
-                void-icon-class="iconfont icon-pingfendengjiRating4"
-                :colors="['#FF3722', '#FFCE00','#00B67A']">
-              </el-rate>
-              <span class="score_num">836 reviews</span>
-              <el-tag type="primary" size="small">$60 one time fee</el-tag>
-              <el-tag type="success" size="small">10% Off</el-tag>
-            </div>
-            <p class="l_c_r_describ">Test Description Test Description Test Description Test Description Test Description Test Description Test Description Test Description Test Description</p>
           </div>
         </div>
+        <empty v-else :tips="'暂无数据'"></empty>
       </div>
       <footer-com></footer-com>
     </div>
@@ -45,9 +48,35 @@ export default {
     return{
       value:3,
       iconClasses: ['iconfont icon-pingfendengjiRating4', 'iconfont icon-pingfendengjiRating4', 'iconfont icon-pingfendengjiRating4'],
+      searchWord:null, //搜索的词
+      loading:false, //加载
+      proList:[] //产品列表数据
+    }
+  },
+  created(){
+    this.searchWord=this.$route.query.searchData
+  },
+  mounted(){
+    if(this.searchWord){
+      this.getQuerySearch();
     }
   },
   methods:{
+    /**
+     * 获取搜索产品
+     */
+    getQuerySearch(word){
+      if(word){
+        this.searchWord=word;
+      }
+      this.loading=true;
+      this.$apiHttp.querySearch({Word:this.searchWord}).then((resp)=>{
+        if(resp.res==0){
+          this.proList=resp.data
+        }
+        this.loading=false;
+      })
+    },
     /**
      * 查看产品详情
      */

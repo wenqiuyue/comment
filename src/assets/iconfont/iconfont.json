@@ -480,6 +480,13 @@
       "font_class": "wangzhi",
       "unicode": "e64d",
       "unicode_decimal": 58957
+    },
+    {
+      "icon_id": "66883668",
+      "name": "无数据",
+      "font_class": "wushuju",
+      "unicode": "e64e",
+      "unicode_decimal": 58958
     }
   ]
 }

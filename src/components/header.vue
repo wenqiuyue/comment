@@ -11,7 +11,7 @@
         </span>
         <div class="search" v-if="isShowSearch">
           <el-input v-model="searchData" placeholder="Search for a company or category…"></el-input>
-          <el-button type="primary" icon="el-icon-search">Search</el-button>
+          <el-button type="primary" icon="el-icon-search" @click="handleSearch">Search</el-button>
         </div>
       </div>
       <div class="header_button">
@@ -53,10 +53,16 @@
 export default {
   name:'header-com',
   props:{
+    //是否显示搜索功能
     isShowSearch:{
       type:Boolean,
       default:true
     },
+    //搜索是否跳转
+    isRouter:{
+      type:Boolean,
+      return:true
+    }
   },
   data(){
     return {
@@ -66,6 +72,21 @@ export default {
     }
   },
   methods:{
+    /**
+     * 搜索
+     */
+    handleSearch(){
+      if(this.isRouter){
+        this.$router.push({
+          path:'/product-list',
+          query:{
+            searchData:this.searchData
+          }
+        })
+      }else{
+        this.$emit('freshData',this.searchData)
+      }
+    },
     /**
      * 去往分类页面
      */

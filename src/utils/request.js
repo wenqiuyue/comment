@@ -1,8 +1,8 @@
 import axios from 'axios'
-
+import { Message } from "element-ui";
 // axios.BaseUrl="http://120.25.67.116:700"
 const instance = axios.create({
-  baseURL: "https://work.damaiking.com/",
+  baseURL: "http://192.168.0.243:8081",
   timeout: 20000,
 })
 // 请求拦截器
@@ -20,11 +20,10 @@ instance.interceptors.request.use(
 // 响应拦截器
 instance.interceptors.response.use(
   response => {
-    console.log(response.data)
     return response.data
   },
   error => {
-    this.$message.error({ message: error.msg })
+    Message.error({ message: error.msg })
     return Promise.reject(error)
   }
 )

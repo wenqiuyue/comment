@@ -1,12 +1,19 @@
 <template>
   <div class="footer">
     <h4 class="b_share">SHARE PAGE</h4>
+    <share></share>
     <div class="b_hre">©2020<a href="/">comment.com</a></div>
   </div>
 </template>
 <script>
+
 export default {
-  name:'footer-com'
+  name:'footer-com',
+  data(){
+    return{
+      
+    }
+  },
 }
 </script>
 <style lang="less" scoped>

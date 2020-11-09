@@ -14,13 +14,13 @@
           <div class="left_categories">
             <h3>View Category</h3>
             <ul>
-              <li v-for="(item,index) in 15" :key="index">Beauty & Well-being</li>
+              <li v-for="(item,index) in 15" :key="index" @click="handleLeftCategory(index)">Beauty & Well-being</li>
             </ul>
           </div>
         </el-col>
         <el-col :span="16" :xs="24">
           <div class="right_categories">
-            <el-row :gutter="20" v-for="(item,index) in 8" :key="index" class="right_row">
+            <el-row :gutter="20" v-for="(item,index) in 15" :key="index" class="right_row" :id="index">
               <el-col :span="8"><div class="r_left_categories"><span>Animals & Pets</span></div></el-col>
               <el-col :span="16">
                 <div class="r_right_categories">
@@ -44,6 +44,12 @@ export default {
     }
   },
   methods:{
+    /**
+     * 点击左边的分类，右边定位
+     */
+    handleLeftCategory(index){
+      window.location.href = `#${index}`;
+    },
     /**
      * 根据类别查看产品列表
      */

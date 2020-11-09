@@ -19,23 +19,31 @@
             <div class="r_c_operation_group">
               <div class="r_c_operation">
                 <svg-icon value="icon-rili" :size="1.5"></svg-icon>
-                <span>2002</span>
+                <span class="r_c_num">2002</span>
               </div>
               <div class="r_c_operation">
                 <svg-icon value="icon-qian" :size="1.5"></svg-icon>
-                <span>$60</span>
+                <span class="r_c_num">$60</span>
               </div>
               <div class="r_c_operation">
                 <svg-icon value="icon-fenxiangzhuanqian" :size="1.5"></svg-icon>
-                <span>Earn</span>
+                <span class="r_c_num">Earn</span>
               </div>
               <div class="r_c_operation">
-                <svg-icon value="icon-xihuan1" :size="1.5"></svg-icon>
-                <span>392</span>
+                <svg-icon value="icon-xihuan1" :size="1.5" @click="handleLike"></svg-icon>
+                <span class="r_c_num">392</span>
               </div>
               <div class="r_c_operation">
-                <svg-icon value="icon-fenxiang" :size="1.5"></svg-icon>
-                <span>92</span>
+                <el-popover
+                  placement="bottom"
+                  trigger="click">
+                  <div>
+                    <p class="share_title">Please select where to share</p>
+                    <share :size="2"></share>
+                  </div>
+                  <svg-icon value="icon-fenxiang" :size="1.5" slot="reference"></svg-icon>
+                </el-popover>
+                <span class="r_c_num r_c_num_share">92</span>
               </div>
             </div>
             <el-button size="mini" type="success" plain>Visit Homepage</el-button>
@@ -172,16 +180,16 @@ I was able to get back my all.
                 </el-dropdown>
               </div>
             </div>
-            <el-button class="add_comparison_button" type="primary" plain>Add Into Comparison</el-button>
+            <el-button class="add_comparison_button" type="primary" plain @click="handleAddComparison">Add Into Comparison</el-button>
             <div class="right_comparison">
               <div class="comparison_list_title">
                 <svg-icon value="icon-cebianlan-bijiao-xuanzhong" :size="1.3"></svg-icon>
-                <span>Comparison[2/4]</span>
+                <span>{{`Comparison[${comparisonList.length}/4]`}}</span>
               </div>
               <ul class="comparison_list_ul">
-                <li v-for="item in 4" :key="item">
-                  <span>Steam</span>
-                  <svg-icon value="icon-shanchu" :size="1.6"></svg-icon>
+                <li v-for="(item,index) in comparisonList" :key="index">
+                  <span>{{item.name}}</span>
+                  <svg-icon value="icon-shanchu" :size="1.6" @click="handleComparisonDel(index)"></svg-icon>
                 </li>
               </ul>
               <div class="comparison_list_button">
@@ -232,7 +240,7 @@ I was able to get back my all.
               <h3>Is a Steam Scam?</h3>
               <div class="scam_tips">Do you think that Steam is a scam ? Please vote!</div>
               <div class="scam_button">
-                <el-button type="success" plain>
+                <el-button type="success" plain @click="handleVote(1)">
                   <div class="button_text">
                     <div>
                       <svg-icon value="icon-dui"></svg-icon>
@@ -241,7 +249,7 @@ I was able to get back my all.
                     <div>Steam is <strong>NOT</strong> a scam</div>
                   </div>
                 </el-button>
-                <el-button type="danger" plain>
+                <el-button type="danger" plain @click="handleVote(2)">
                   <div class="button_text">
                     <div>
                       <svg-icon value="icon-icon1"></svg-icon>
@@ -260,15 +268,85 @@ I was able to get back my all.
   </div>
 </template>
 <script>
+import types from '../../commons/types';
 export default {
   data(){
     return{
       isEllipsis:true, //产品介绍是否是省略状态
       value:3,
       iconClasses: ['iconfont icon-pingfendengjiRating4', 'iconfont icon-pingfendengjiRating4', 'iconfont icon-pingfendengjiRating4'],
+      comparisonList:[]
     }
   },
+  mounted(){
+    this.getComparisonList();
+  },
   methods:{
+    /**
+     * 投票
+     */
+    handleVote(vote){
+      const data={
+        ProId:1,
+        voteY:vote==1?1:null,
+        voteN:vote==2?1:null
+      }
+      this.$apiHttp.vote(data).then((resp)=>{
+        if(resp.res==0){
+          this.$message({
+            message: '投票成功',
+            type: 'success'
+          });
+        }
+      })
+    },
+    /**
+     * 喜欢
+     */
+    handleLike(){
+      const data={
+        proId:1
+      }
+      this.$apiHttp.fabulous(data).then((resp)=>{
+        if(resp.res==0){
+          this.$message({
+            message: '点赞成功',
+            type: 'success'
+          });
+        }
+      })
+    },
+    /**
+     * 删除比较列表
+     */
+    handleComparisonDel(index){
+      this.comparisonList=this.comparisonList.filter((m,ind) => ind!=index);
+      localStorage.setItem(types.PRODUCT_COMPARISON, JSON.stringify(this.comparisonList));
+    },
+    /**
+     * 获取产品比较列表
+     */
+    getComparisonList(){
+      this.comparisonList=[];
+      const cList=JSON.parse(localStorage.getItem(types.PRODUCT_COMPARISON));
+      if(cList){
+        this.comparisonList.push(...cList)
+      }
+    },
+    /**
+     * 将产品加入到比较列表
+     */
+    handleAddComparison(){
+      if(this.comparisonList.length>=4){
+        return;
+      }
+      const comparisonData={
+        name:"Steam",
+        id:1
+      }
+      this.comparisonList.push(comparisonData)
+      localStorage.setItem(types.PRODUCT_COMPARISON, JSON.stringify(this.comparisonList));
+    },
     /**
      * 进入比较
      */
@@ -285,6 +363,10 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+.share_title{
+  color: #333333;
+  font-weight: bold;
+}
 .product-info{
   height: 100%;
   .p_product-info{
@@ -339,10 +421,13 @@ export default {
                 display: flex;
                 flex-direction: column;
                 align-items: center;
-                span{
+                .r_c_num{
                   font-size: 0.75rem;
                   margin-top: 3px;
                   color: #666666;
+                }
+                .r_c_num_share{
+                  margin-top: 0;
                 }
                 svg{
                   color:#aaa;

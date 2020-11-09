@@ -1,5 +1,5 @@
 <template>
-<div class="home">
+<div class="home" v-loading="loading">
   <header-com :isShowSearch="false"></header-com>
   <div class="h_home">
     <div class="banner">
@@ -8,7 +8,7 @@
         <h2 class="title_2">Read reviews. Write reviews. Find products.</h2>
         <div class="b_search">
           <el-input class="s_input" v-model="searchData" placeholder="Search for a company or category…"></el-input>
-          <el-button class="s_button" type="primary" icon="el-icon-search">Search</el-button>
+          <el-button class="s_button" type="primary" icon="el-icon-search" @click="handleSearch">Search</el-button>
         </div>
         <h2 class="title_3">Browse products by category</h2>
         <div class="b_type">
@@ -36,7 +36,7 @@
             </div>
             <div class="type_card_text">Banks</div>
           </div>
-          <div class="type_card">
+          <div class="type_card" @click="goCategories">
             <div class="type_card_icon">
               <i class="el-icon-more"></i>
             </div>
@@ -87,29 +87,65 @@ I was able to get back my all.
 export default {
   data(){
     return{
-      searchData:null,
+      loading:false, //加载
+      searchData:null, //搜索
       iconClasses: ['iconfont icon-pingfendengjiRating4', 'iconfont icon-pingfendengjiRating4', 'iconfont icon-pingfendengjiRating4'],
       value:3
     }
   },
-  // mounted(){
-  //   const data={
-  //     EventeId: 422
-  //   }
-  //   this.$apiHttp.getAllRecentFilms(data).then((res)=>{
-  //     console.log(res);
-  //   })
-  //   const d={params: {
-  //     format: 'DateTime',
-  //     c:22
-	// 	}}
-  //   this.$apiHttp.getAllRecentFilmsGet(d).then((res)=>{
-  //     console.log(res);
-  //   })
-  //   console.log(new Date().format('yyyy月dd'))
-  // },
+  mounted(){
+    // const data={
+    //   EventeId: 422
+    // }
+    // this.$apiHttp.getAllRecentFilms(data).then((res)=>{
+    //   console.log(res);
+    // })
+    // const d={params: {
+    //   format: 'DateTime',
+    //   c:22
+		// }}
+    // this.$apiHttp.getAllRecentFilmsGet(d).then((res)=>{
+    //   console.log(res);
+    // })
+    // console.log(new Date().format('yyyy月dd'))
+    this.getQueryCommentTypeData();
+  },
   methods:{
+    /**
+     * 搜索
+     */
+    handleSearch(){
+      this.$router.push({
+        path:'/product-list',
+        query:{
+          searchData:this.searchData
+        }
+      })
+    },
+    /**
+     * 获取首页热门评论
+     */
+    getQueryCommentTypeData(){
+      // this.loading=true;
+      const data={
+        pageCount:15
+      }
+      Promise.all([
+        this.$apiHttp.getQueryHotType(),
+        this.$apiHttp.getQueryCommentInfo(data)
+      ]).then((resp)=>{
+        if(resp[0].res==0 && resp[1].res==0){
 
+        }
+        this.loading=false;
+      })
+    },
+    /**
+     * 查看分类
+     */
+    goCategories(){
+      this.$router.push({ path: '/categories'});
+    }
   }
 }
 </script>
