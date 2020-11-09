@@ -91,6 +91,25 @@ export default {
       iconClasses: ['iconfont icon-pingfendengjiRating4', 'iconfont icon-pingfendengjiRating4', 'iconfont icon-pingfendengjiRating4'],
       value:3
     }
+  },
+  // mounted(){
+  //   const data={
+  //     EventeId: 422
+  //   }
+  //   this.$apiHttp.getAllRecentFilms(data).then((res)=>{
+  //     console.log(res);
+  //   })
+  //   const d={params: {
+  //     format: 'DateTime',
+  //     c:22
+	// 	}}
+  //   this.$apiHttp.getAllRecentFilmsGet(d).then((res)=>{
+  //     console.log(res);
+  //   })
+  //   console.log(new Date().format('yyyy月dd'))
+  // },
+  methods:{
+
   }
 }
 </script>
