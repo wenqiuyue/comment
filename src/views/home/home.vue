@@ -117,12 +117,14 @@ export default {
      * 搜索
      */
     handleSearch(){
-      this.$router.push({
-        path:'/product-list',
-        query:{
-          searchData:this.searchData
-        }
-      })
+      if(this.searchData){
+          this.$router.push({
+          path:'/product-list',
+          query:{
+            searchData:this.searchData
+          }
+        })
+      }
     },
     /**
      * 获取首页热门评论

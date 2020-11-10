@@ -44,7 +44,7 @@
         v-else
         placeholder="Search for a company or category…"
         v-model="searchData">
-        <el-button type="primary" slot="append" size="mini">Search</el-button>
+        <el-button type="primary" slot="append" size="mini" @click="handleSearch">Search</el-button>
         <i slot="prefix" class="el-input__icon el-icon-back" style="font-size:1.1rem" @click="isPhoneSearch=false"></i>
       </el-input>
     </div>
@@ -62,7 +62,7 @@ export default {
     //搜索是否跳转
     isRouter:{
       type:Boolean,
-      return:true
+      default:true
     }
   },
   data(){
@@ -77,7 +77,11 @@ export default {
      * 搜索
      */
     handleSearch(){
+      if(!this.searchData){
+        return;
+      }
       if(this.isRouter){
+        console.log(1)
         this.$router.push({
           path:'/product-list',
           query:{
