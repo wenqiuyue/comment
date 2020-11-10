@@ -89,6 +89,8 @@ export default {
     return{
       loading:false, //加载
       searchData:null, //搜索
+      hotReview:null, //热门评论
+      hotType:null, //热门分类
       iconClasses: ['iconfont icon-pingfendengjiRating4', 'iconfont icon-pingfendengjiRating4', 'iconfont icon-pingfendengjiRating4'],
       value:3
     }
@@ -135,7 +137,8 @@ export default {
         this.$apiHttp.getQueryCommentInfo(data)
       ]).then((resp)=>{
         if(resp[0].res==0 && resp[1].res==0){
-
+          this.hotReview=resp[1].data;
+          this.hotType=resp[0].data;
         }
         this.loading=false;
       })

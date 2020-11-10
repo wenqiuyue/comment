@@ -1,5 +1,5 @@
 <template>
-  <div class="write-review">
+  <div class="write-review" v-loading="loading">
     <header-com></header-com>
     <div class="w_write-review">
       <div class="write-review_top">
@@ -16,7 +16,7 @@
         </div>
       </div>
       <div class="write-review_main">
-        <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px">
+        <el-form :model="reviewForm" :rules="rules" ref="ruleForm" label-width="100px">
           <h2>Give your comments</h2>
           <el-rate
             class="r_rate"
@@ -27,13 +27,13 @@
             :colors="['#FF3722', '#FFCE00','#00B67A']">
           </el-rate>
           <h2>Tell us about your experience</h2>
-          <el-form-item prop="textarea">
+          <el-form-item prop="Content">
             <el-input
               class="input_experience"
               type="textarea"
               :rows="8"
               placeholder="This is where you write your review. Explain what happened, and leave out offensive words. Keep your feedback honest, helpful, and constructive."
-              v-model="ruleForm.textarea">
+              v-model="reviewForm.Content">
             </el-input>
           </el-form-item>
           <div class="form_inline">
@@ -44,26 +44,26 @@
                 :on-success="handleAvatarSuccess"
                 :show-file-list="false"
                 >
-                <el-avatar v-if="imageUrl" size="large" :src="imageUrl"></el-avatar>
+                <el-avatar v-if="reviewForm.Icon" size="large" :src="reviewForm.Icon" fit="cover"></el-avatar>
                 <svg-icon v-else value="icon--" :size="2.5"></svg-icon>
               </el-upload>
             </el-form-item>
-            <el-form-item prop="name" class="form_item">
-              <el-input v-model="ruleForm.name" placeholder="name"></el-input>
+            <el-form-item prop="Name" class="form_item">
+              <el-input v-model="reviewForm.Name" placeholder="Name"></el-input>
             </el-form-item>
           </div>
           <div class="form_inline">
-            <el-form-item prop="name" class="form_item">
-              <el-input v-model="ruleForm.name" placeholder="Email"></el-input>
+            <el-form-item prop="Email" class="form_item">
+              <el-input v-model="reviewForm.Email" placeholder="Email"></el-input>
             </el-form-item>
-            <el-form-item prop="name" class="form_item">
-              <el-input v-model="ruleForm.name" placeholder="Verification Code">
+            <el-form-item prop="Code" class="form_item">
+              <el-input v-model="reviewForm.Code" placeholder="Verification Code">
                 <validate-code slot="append" @input="getCode" ></validate-code>
               </el-input>
             </el-form-item>
           </div>
           <el-form-item>
-            <el-button type="primary" style="width:100%">Submit My Review</el-button>
+            <el-button type="primary" style="width:100%" @click="handleSubmit">Submit My Review</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -74,35 +74,83 @@
 <script>
 export default {
   data(){
+    var checkCode = (rule, value, callback) => {
+      if (value!=this.codeValidate) {
+        return callback(new Error('Verification code error'));
+      }else{
+        callback();
+      }
+    };
     return{
       value:null,
+      loading:false, //加载
       iconClasses: ['iconfont icon-pingfendengjiRating4', 'iconfont icon-pingfendengjiRating4', 'iconfont icon-pingfendengjiRating4'],
-      ruleForm:{
-        textarea: '',
-        name:null,
-        imageUrl:null
+      reviewForm:{
+        ProId:null, //产品id
+        AtcId:null, //文章信息Id
+        Content:null, //评论内容
+        Email:null, //邮箱
+        Name:null, //用户名称
+        Icon:null, //用户头像
+        Code:null //验证码
       },
-      imageUrl:null,
-      fileList:[],
+      codeValidate:null, //当前验证码
       rules: {
-        textarea: [
+        Content: [
           { required: true, message: 'Please enter the content', trigger: 'blur' },
         ],
-        name:[
+        Name:[
           { required: true, message: 'Please enter the content', trigger: 'blur' },
-        ]
+        ],
+        Email:[
+          { required: true, message: 'Please enter the content', trigger: 'blur' },
+        ],
+        Code:[
+          { required: true, message: 'Please enter the content', trigger: 'blur' },
+          { validator: checkCode, trigger: 'blur' }
+        ],
       }
     }
   },
   methods:{
     /**
+     * 提交评论表单
+     */
+    handleSubmit(){
+      this.$refs.ruleForm.validate((valid)=>{
+        if(valid){
+          this.reviewForm.ProId=this.$route.query.proid;
+          this.loading=true;
+          this.$apiHttp.postSubject(this.reviewForm).then((resp)=>{
+            this.loading=false;
+            if(resp.res==0){
+              this.$message({
+                message: 'Comment successful',
+                type: 'success'
+              });
+              this.$alert('Your comment is being reviewed. Please check it later', 'Tips', {
+                confirmButtonText: 'Determine',
+                type: 'warning',
+                center: true
+              }).then(() => {
+                this.$router.back()
+              }).catch(()=>{});
+            }
+          })
+        }else{
+          return;
+        }
+      })
+    },
+    /**
      * 获取验证码
      */
     getCode(code){
-      console.log(code)
+      this.codeValidate=code;
     },
     handleAvatarSuccess(res, file){
-      this.imageUrl = URL.createObjectURL(file.raw);
+      this.reviewForm.Icon = URL.createObjectURL(file.raw);
+      console.log(this.reviewForm.Icon)
     },
     /**
      * 返回

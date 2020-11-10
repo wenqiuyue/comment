@@ -20,10 +20,14 @@ instance.interceptors.request.use(
 // 响应拦截器
 instance.interceptors.response.use(
   response => {
-    return response.data
+    const result = response.data;
+    if(result.res!=0){
+      Message.error({ message: result.msg })
+    }
+    return result
   },
   error => {
-    Message.error({ message: error.msg })
+    Message.error({ message: error })
     return Promise.reject(error)
   }
 )

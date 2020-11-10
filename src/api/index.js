@@ -40,3 +40,15 @@ export function fabulous (data) {
 export function vote (data) {
   return fetchPost('/Controller/Vote',data)
 };
+/**
+ * 发布评论
+ */
+export function postSubject (data) {
+  return fetchPost('/Controller/PostSubject',data)
+};
+/**
+ * 产品详情
+ */
+export function getProcessDetails (data) {
+  return fetchPost('/Controller/ProcessDetails',data)
+};

@@ -1,7 +1,7 @@
 <template>
   <div class="footer">
     <h4 class="b_share">SHARE PAGE</h4>
-    <share></share>
+    <share :url="$route.fullPath"></share>
     <div class="b_hre">©2020<a href="/">comment.com</a></div>
   </div>
 </template>
@@ -14,13 +14,15 @@ export default {
       
     }
   },
+  created(){
+  },
 }
 </script>
 <style lang="less" scoped>
 .footer{
     background: #000032;
     color: #ffffff;
-    padding: 25px 0;
+    padding: 1px 0 28px 0;
     .b_share{
       text-align: center;
       font-size: 20px;

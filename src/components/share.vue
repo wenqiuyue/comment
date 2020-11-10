@@ -35,8 +35,8 @@ export default {
   },
   props:{
     size:{
-      type:Number,
-      default:2.5
+      type:String,
+      default:'3'
     },
     url:{
       type:String,

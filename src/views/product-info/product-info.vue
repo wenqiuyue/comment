@@ -1,5 +1,5 @@
 <template>
-  <div class="product-info">
+  <div class="product-info" v-loading="loading">
     <header-com></header-com>
     <div class="p_product-info">
       <div class="p_product-info_top">
@@ -10,7 +10,7 @@
               fit="cover">
             </el-image>
             <div class="left_c_info">
-              <h2>Paw Print Genetics</h2>
+              <h2 @click="handleHomePage">Paw Print Genetics</h2>
               <h5>Reviews 837  •  Excellent</h5>
               <rate :value="5" :isDisabled="true"></rate>
             </div>
@@ -30,7 +30,7 @@
                 <span class="r_c_num">Earn</span>
               </div>
               <div class="r_c_operation">
-                <svg-icon value="icon-xihuan1" :size="1.5" @click="handleLike"></svg-icon>
+                <svg-icon :value="likeProList.indexOf(1)==-1?'icon-xihuan1':'icon-xihuan'" :size="1.5" @click="handleLike"></svg-icon>
                 <span class="r_c_num">392</span>
               </div>
               <div class="r_c_operation">
@@ -39,14 +39,14 @@
                   trigger="click">
                   <div>
                     <p class="share_title">Please select where to share</p>
-                    <share :size="2"></share>
+                    <share :size="'2'" :url="$route.fullPath"></share>
                   </div>
                   <svg-icon value="icon-fenxiang" :size="1.5" slot="reference"></svg-icon>
                 </el-popover>
                 <span class="r_c_num r_c_num_share">92</span>
               </div>
             </div>
-            <el-button size="mini" type="success" plain>Visit Homepage</el-button>
+            <el-button size="mini" type="success" plain @click="handleHomePage">Visit Homepage</el-button>
             <el-button size="mini" type="primary" plain>Relevant Articles</el-button>
           </div>
         </div>
@@ -99,7 +99,7 @@ I was able to get back my all.
               </p>
               <div class="card_bottom">
                 <el-tooltip class="item" effect="dark" content="Useful" placement="top-start">
-                  <svg-icon value="icon-xihuan1" :size="1.3" style="color:#aaa"></svg-icon>
+                  <svg-icon value="icon-xihuan1" :size="1.3" :style="likeReviewList.indexOf('1-1')==-1?'color:#aaa':'color:#f56c6c'" @click="handleUseFul"></svg-icon>
                 </el-tooltip>
                 <span>(0)</span>
               </div>
@@ -272,16 +272,41 @@ import types from '../../commons/types';
 export default {
   data(){
     return{
+      loading:false, //加载
       isEllipsis:true, //产品介绍是否是省略状态
       value:3,
       iconClasses: ['iconfont icon-pingfendengjiRating4', 'iconfont icon-pingfendengjiRating4', 'iconfont icon-pingfendengjiRating4'],
-      comparisonList:[]
+      comparisonList:[], //产品比较列表
+      processDetails:null, //产品详情
+      likeProList:[], //喜欢产品列表
+      likeReviewList:[] //喜欢的评论
     }
   },
   mounted(){
     this.getComparisonList();
+    this.getLikeList();
+    this.getLikeReviewList();
   },
   methods:{
+    /**
+     * 跳转产品页
+     */
+    handleHomePage(){
+      const url="https://www.baidu.com"
+      window.open("http://localhost:8080/#/check-page?url="+url);
+    },
+    /**
+     * 产品详情
+     */
+    getProcessDetailsData(){
+      this.loading=true;
+      this.$apiHttp.getProcessDetails({Id:1}).then((resp)=>{
+        if(resp.res==0){
+          this.processDetails=resp.data
+        }
+        this.loading=false;
+      })
+    },
     /**
      * 投票
      */
@@ -301,9 +326,32 @@ export default {
       })
     },
     /**
+     * 评论点赞
+     */
+    handleUseFul(){
+      if(this.likeReviewList.indexOf('1-1')!=-1){
+        return;
+      }
+      this.likeReviewList.push('1-1')
+      localStorage.setItem(types.LIKE_REVIEW, JSON.stringify(this.likeReviewList));
+    },
+    /**
+     * 获取点赞的评论
+     */
+    getLikeReviewList(){
+      this.likeReviewList=[];
+      const lReviewList=JSON.parse(localStorage.getItem(types.LIKE_REVIEW));
+      if(lReviewList){
+        this.likeReviewList=lReviewList;
+      }
+    },
+    /**
      * 喜欢
      */
     handleLike(){
+      if(this.likeProList.indexOf(1)!=-1){
+        return;
+      }
       const data={
         proId:1
       }
@@ -313,8 +361,21 @@ export default {
             message: '点赞成功',
             type: 'success'
           });
+          this.likeProList.push(data.proId);
+          //将点赞的产品存到本地
+          localStorage.setItem(types.LIKE_PROID, JSON.stringify(this.likeProList));
         }
       })
+    },
+    /**
+     * 获取喜欢产品列表
+     */
+    getLikeList(){
+      this.likeProList=[];
+      const lList=JSON.parse(localStorage.getItem(types.LIKE_PROID));
+      if(lList){
+        this.likeProList=lList;
+      }
     },
     /**
      * 删除比较列表
@@ -337,7 +398,10 @@ export default {
      * 将产品加入到比较列表
      */
     handleAddComparison(){
-      if(this.comparisonList.length>=4){
+      const idList=this.comparisonList.map((m)=>{
+        return m.id
+      })
+      if( idList.indexOf(1)!=-1 || this.comparisonList.length>=4){
         return;
       }
       const comparisonData={
@@ -357,7 +421,12 @@ export default {
      * 进入写评论
      */
     handleWriteReview(){
-      this.$router.push('/write-review')
+      this.$router.push({
+        path:'/write-review',
+        query:{
+          proid:1
+        }
+      })
     },
   }
 }
@@ -398,8 +467,13 @@ export default {
                 font-size: 1.6rem;
               }
               h2{
-              margin: 0;
-              font-size: 2rem;
+                margin: 0;
+                font-size: 2rem;
+                cursor: pointer;
+                &:hover{
+                  color:#1989fa;
+                  border-bottom: 1px solid #1989fa;
+                }
               }
               h5{
                 margin: 5px 0;

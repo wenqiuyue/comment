@@ -21,9 +21,10 @@
     </div>
     <div class="phone_header">
       <div class="p_logo" v-if="!isPhoneSearch">
+        <svg-icon value="icon-fanhui" :size="1.5" v-if="isShowSearch" @click="$router.back()"></svg-icon>
         <span @click="goHome">
           <el-image
-            style="width: 10rem"
+            style="width: 9rem"
             :src="require('../assets/logo1.png')"
             fit="contain">
           </el-image>
@@ -172,10 +173,17 @@ export default {
     font-size: 0.875rem;
     font-weight: bold;
     height: 72px;
-    padding:0 20px;
+    padding:0 20px 0 15px;
     color: #ffffff;
     max-width: 1206px;
     margin: 0 auto;
+    .p_logo{
+      display: flex;
+      align-items: center;
+      svg{
+        margin-right: 1rem;
+      }
+    }
     .p_icon{
       .p_h_icon{
         font-size: 1.3rem;

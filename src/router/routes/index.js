@@ -35,4 +35,10 @@ export default [
 		name: 'compare',
 		component: () => import('../../views/compare/compare.vue'),
 	},
+	//跳转页
+	{
+		path: '/check-page',
+		name: 'check-page',
+		component: () => import('../../views/check-page/check-page.vue'),
+	},
 ]
