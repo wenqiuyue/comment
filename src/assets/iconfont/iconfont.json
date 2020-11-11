@@ -487,6 +487,13 @@
       "font_class": "wushuju",
       "unicode": "e64e",
       "unicode_decimal": 58958
+    },
+    {
+      "icon_id": "67051427",
+      "name": "类型",
+      "font_class": "lanlvtubiaozhizuomoban-03",
+      "unicode": "e60a",
+      "unicode_decimal": 58890
     }
   ]
 }

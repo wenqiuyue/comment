@@ -12,33 +12,15 @@
         </div>
         <h2 class="title_3">Browse products by category</h2>
         <div class="b_type">
-          <div class="type_card">
-            <div class="type_card_icon">
-              <svg-icon value="icon-Agriculture" :size="1.4"></svg-icon>
+          <div class="type_card" v-for="(item,index) in hotType" :key="item.id">
+            <div class="type_card_icon" v-if="index<4">
+              <svg-icon value="icon-lanlvtubiaozhizuomoban-03" :size="1.6"></svg-icon>
             </div>
-            <div class="type_card_text">Banks</div>
-          </div>
-          <div class="type_card">
-            <div class="type_card_icon">
-              <svg-icon value="icon-Fabricationservices" :size="1.4"></svg-icon>
-            </div>
-            <div class="type_card_text">Travel Insurance</div>
-          </div>
-          <div class="type_card">
-            <div class="type_card_icon">
-              <svg-icon value="icon-Homeandgarden" :size="1.4"></svg-icon>
-            </div>
-            <div class="type_card_text">Banks</div>
-          </div>
-          <div class="type_card">
-            <div class="type_card_icon">
-              <svg-icon value="icon-ChemistryandChemicalIndustry" :size="1.4"></svg-icon>
-            </div>
-            <div class="type_card_text">Banks</div>
+            <div class="type_card_text" v-if="index<4">{{item.name}}</div>
           </div>
           <div class="type_card" @click="goCategories">
             <div class="type_card_icon">
-              <i class="el-icon-more"></i>
+              <svg-icon value="icon-lanlvtubiaozhizuomoban-03" :size="1.6"></svg-icon>
             </div>
             <div class="type_card_text">More</div>
           </div>
@@ -136,10 +118,10 @@ export default {
       }
       Promise.all([
         this.$apiHttp.getQueryHotType(),
-        this.$apiHttp.getQueryCommentInfo(data)
+        // this.$apiHttp.getQueryCommentInfo(data)
       ]).then((resp)=>{
-        if(resp[0].res==0 && resp[1].res==0){
-          this.hotReview=resp[1].data;
+        if(resp[0].res == 200){
+          // this.hotReview=resp[1].data;
           this.hotType=resp[0].data;
         }
         this.loading=false;
@@ -222,9 +204,20 @@ export default {
             line-height: 1rem;
             color: #1b1b1b;
             text-align: center;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            -webkit-box-orient: vertical;
+
           }
           .type_card_icon{
             margin-bottom: 0.2rem;
+          }
+          &:hover{
+            .type_card_text{
+              color: #409eff;
+            }
           }
         }
       }

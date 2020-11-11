@@ -44,6 +44,12 @@ export default {
           font-size: 1.125rem;
           margin-top: 0;
         }
+        /deep/.share{
+          svg{
+            height: 2rem;
+            width: 2rem;
+          }
+        }
       }
     }
 </style>

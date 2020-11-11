@@ -5,7 +5,7 @@
       <div class="p_product-list_top">
         <div class="p_l_t_container">
           <div class="return" v-if="!searchWord"><span><i class="el-icon-arrow-left"></i>Animals & Pets</span></div>
-          <h2>{{`2 result(s) for "${searchWord}"`}}</h2>
+          <h2>{{`${proList.length} result(s) for "${searchWord}"`}}</h2>
           <h5>Find the right products for you and your internet business.</h5>
         </div>
       </div>
@@ -18,21 +18,20 @@
             </el-image>
             <div class="list_card_right">
               <div>
-                <span class="l_c_r_title" @click="handleProductInfo">Paw Print Genetics</span>
+                <span class="l_c_r_title">{{item.Name}}</span>
               </div>
               <div class="l_c_r_score">
-                <el-rate
+                <rate
                   class="c_t_rate"
-                  v-model="value"
-                  :icon-classes="iconClasses"
-                  void-icon-class="iconfont icon-pingfendengjiRating4"
-                  :colors="['#FF3722', '#FFCE00','#00B67A']">
-                </el-rate>
+                  :value="value"
+                  :isDisabled="true"
+                >
+                </rate>
                 <span class="score_num">836 reviews</span>
-                <el-tag type="primary" size="small">${{item.Price}} one time fee</el-tag>
-                <el-tag type="success" size="small">10% Off</el-tag>
+                <el-tag type="primary" size="small" v-if="item.Price">${{item.Price}} one time fee</el-tag>
+                <el-tag type="success" size="small" v-if="item.Discount">{{item.Discount}}</el-tag>
               </div>
-              <p class="l_c_r_describ">{{item.Description}}</p>
+              <p class="l_c_r_describ">{{item.Description?item.Description.replace(/&lt;.+?&gt;/g, ''):'No introduction'}}</p>
             </div>
           </div>
         </div>
@@ -70,8 +69,8 @@ export default {
         this.searchWord=word;
       }
       this.loading=true;
-      this.$apiHttp.querySearch({Word:this.searchWord}).then((resp)=>{
-        if(resp.res==0){
+      this.$apiHttp.querySearch({ params:{work:this.searchWord}}).then((resp)=>{
+        if(resp.res==200){
           this.proList=resp.data
         }
         this.loading=false;
@@ -144,14 +143,10 @@ export default {
           padding-left: 32px;
           display: flex;
           flex-direction: column;
+          cursor: pointer;
           .l_c_r_title{
             font-size: 1.125rem;
             color: #1b1b21;
-            cursor: pointer;
-            &:hover{
-              color:#1989fa;
-              border-bottom: 1px solid #1989fa;
-            }
           }
           .l_c_r_score{
             margin-top: 12px;

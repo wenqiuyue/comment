@@ -6,6 +6,7 @@
     void-icon-class="iconfont icon-pingfendengjiRating4"
     :colors="['#FF3722', '#FFCE00','#00B67A']"
     :disabled="isDisabled"
+    disabled-void-color="rgb(198, 209, 222)"
     allow-half
   >
   </el-rate>

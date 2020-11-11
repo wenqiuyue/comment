@@ -14,25 +14,25 @@ export function getAllRecentFilmsGet (data) {
  * 首页热门评论
  */
 export function getQueryCommentInfo (data) {
-  return fetchPost('/Controller/QueryCommentInfo.ashx',data)
+  return fetchPost('/Controller/QueryCommentInfo',data)
 };
 /**
  * 首页热门分类
  */
 export function getQueryHotType () {
-  return fetchPost('/Controller/QueryHotType.ashx')
+  return fetchGet('/api/HotType/QueryHotType')
 };
 /**
  * 搜索
  */
 export function querySearch (data) {
-  return fetchPost('/Controller/QuerySearch.ashx',data)
+  return fetchGet('/api/HotType/Seach',data)
 };
 /**
  * 点赞
  */
 export function fabulous (data) {
-  return fetchPost('/Controller/Fabulous.ashx',data)
+  return fetchPost('/Controller/Fabulous',data)
 };
 /**
  * 投票

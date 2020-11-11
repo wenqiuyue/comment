@@ -2,7 +2,7 @@ import axios from 'axios'
 import { Message } from "element-ui";
 // axios.BaseUrl="http://120.25.67.116:700"
 const instance = axios.create({
-  baseURL: "http://192.168.0.243:8081",
+  baseURL: "http://120.25.67.116:5251",
   timeout: 20000,
 })
 // 请求拦截器
@@ -21,7 +21,7 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
   response => {
     const result = response.data;
-    if(result.res!=0){
+    if(result.res!=200){
       Message.error({ message: result.msg })
     }
     return result
@@ -42,7 +42,7 @@ export function fetchGet (url, config) {
     instance
       .get(url, config)
       .then(
-        response => resolve(response.data),
+        response => resolve(response),
         error => reject(error)
       )
       .catch(reject)
@@ -60,7 +60,7 @@ export function fetchPost (url, params, config) {
     instance
       .post(url, params, config)
       .then(
-        response => resolve(response.data),
+        response => resolve(response),
         error => reject(error)
       )
       .catch(reject)
