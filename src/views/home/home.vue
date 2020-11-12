@@ -13,10 +13,10 @@
         <h2 class="title_3">Browse products by category</h2>
         <div class="b_type">
           <div class="type_card" v-for="(item,index) in hotType" :key="item.id">
-            <div class="type_card_icon" v-if="index<4">
+            <div class="type_card_icon">
               <svg-icon value="icon-lanlvtubiaozhizuomoban-03" :size="1.6"></svg-icon>
             </div>
-            <div class="type_card_text" v-if="index<4">{{item.name}}</div>
+            <div class="type_card_text">{{item.name}}</div>
           </div>
           <div class="type_card" @click="goCategories">
             <div class="type_card_icon">
@@ -29,30 +29,26 @@
     </div>
     <div class="recent_reviews">
       <div class="r_r_title">Recent reviews</div>
-      <div class="r_r_reviews">
-        <div class="r_r_r_card" v-for="(item,index) in 20" :key="item">
-          <div class="r_r_r_c_card" v-for="(item,ind) in 2" :key="item">
+      <div class="r_r_reviews" v-if="hotReview && hotReview.length>0">
+        <div class="r_r_r_card" v-for="(item,index) in hotReview" :key="index">
+          <div class="r_r_r_c_card" v-for="(review,ind) in item" :key="ind" @click="handleProInfo(review)">
             <div class="c_title">
-              <el-avatar class="c_t_img" size="large" src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"></el-avatar>
-              <el-rate
+              <el-avatar class="c_t_img" size="large" :src="review.Icon"></el-avatar>
+              <rate
                 class="c_t_rate"
-                v-model="value"
-                :icon-classes="iconClasses"
-                void-icon-class="iconfont icon-pingfendengjiRating4"
-                :colors="['#FF3722', '#FFCE00','#00B67A']">
-              </el-rate>
+                :value="review.Rank"
+                :isDisabled="true"
+              >
+              </rate>
             </div>
-            <p class="c_user">Barb Ackerman <span>reviewed</span> Maryposa Shoes</p>
-            <p class="c_text" v-if="index%2==0 && ind==1">
-              Cant Withdraw, communication thats not only ambiguous but often weeks after anything happens and no timetable for a return its a scam people. Probably even changed trust pilot name to Bank to avoid their reviews being found. I would love to be wrong about this but the balls in their court and they already left the building. But with the help of ( Georgebruce 00 at yahoo mail. ) 
-I was able to get back my all.
-            </p>
-            <p class="c_text" v-else>
-              Cant Withdraw, communication thats not only ambiguous but often weeks after anything happens
+            <p class="c_user">{{review.Name}} <span>reviewed</span> {{review.ProName}}</p>
+            <p class="c_text">
+              {{review.Content}}
             </p>
           </div>
         </div>
       </div>
+      <empty v-else :tips="'No hot comments'" :paddingData="3"></empty>
     </div>
     <div class="be_heard">
       <h1 class="heard_title">Be heard</h1>
@@ -73,28 +69,23 @@ export default {
       searchData:null, //搜索
       hotReview:null, //热门评论
       hotType:null, //热门分类
-      iconClasses: ['iconfont icon-pingfendengjiRating4', 'iconfont icon-pingfendengjiRating4', 'iconfont icon-pingfendengjiRating4'],
-      value:3
     }
   },
   mounted(){
-    // const data={
-    //   EventeId: 422
-    // }
-    // this.$apiHttp.getAllRecentFilms(data).then((res)=>{
-    //   console.log(res);
-    // })
-    // const d={params: {
-    //   format: 'DateTime',
-    //   c:22
-		// }}
-    // this.$apiHttp.getAllRecentFilmsGet(d).then((res)=>{
-    //   console.log(res);
-    // })
-    // console.log(new Date().format('yyyy月dd'))
     this.getQueryCommentTypeData();
   },
   methods:{
+    /**
+     * 查看评论中的产品详情
+     */
+    handleProInfo(review){
+      this.$router.push({
+        path:'/product-info',
+        query:{
+          pid:review.ProId
+        }
+      })
+    },
     /**
      * 搜索
      */
@@ -112,16 +103,15 @@ export default {
      * 获取首页热门评论
      */
     getQueryCommentTypeData(){
-      // this.loading=true;
-      const data={
-        pageCount:15
-      }
+      this.loading=true;
       Promise.all([
-        this.$apiHttp.getQueryHotType(),
-        // this.$apiHttp.getQueryCommentInfo(data)
+        this.$apiHttp.getQueryHotType({params:{pageCount:3}}),
+        this.$apiHttp.getQueryHotComment({params:{pageCount:12}})
       ]).then((resp)=>{
-        if(resp[0].res == 200){
-          // this.hotReview=resp[1].data;
+        if(resp[0].res == 200 && resp[1].res == 200){
+          if(resp[1].data){
+            this.hotReview = _.chunk(resp[1].data,2);
+          }
           this.hotType=resp[0].data;
         }
         this.loading=false;
@@ -233,22 +223,23 @@ export default {
       padding:45px 0 48px 0;
     }
     .r_r_reviews{
-      padding: 0 8px;
+      padding: 0 12px;
       display:-webkit-box;
       flex-direction: row;
-      width: calc(100% - 24px);
+      width: calc(100% - 32px);
       overflow-x: scroll;
       .r_r_r_card{
         display: flex;
         flex-direction: column;
         padding-bottom: 15px;
         margin-right: 10px;
-        width: 20%;
+        width: 25%;
         .r_r_r_c_card{
           background: #ffffff;
           margin-bottom: 10px;
           padding: 22px 15px 22px 22px;
           width: calc(100% - 37px);
+          cursor: pointer;
           .c_title{
             display: flex;
             flex-direction: row;
@@ -382,6 +373,8 @@ export default {
           padding:2rem 0;
         }
         .r_r_reviews{
+          padding: 0 8px;
+          width: calc(100% - 24px);
           .r_r_r_card{
             padding-bottom: 0.8rem;
             margin-right: 0.5rem;

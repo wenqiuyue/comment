@@ -4,6 +4,7 @@ import router from './router'
 import store from './store'
 import ElementUI from 'element-ui';
 import components from './components'; // 自定义模板
+import * as _ from 'lodash'
 import * as api from './api/index';
 
 import 'element-ui/lib/theme-chalk/index.css';

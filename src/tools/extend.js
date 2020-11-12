@@ -1,35 +1,42 @@
-/**
- **
- * 日期格式化函数扩展
- * @param format
- * @returns {*}
- */
-// eslint-disable-next-line no-extend-native
-Date.prototype.format = function formatDate(format = 'yyyy-MM-dd hh:mm:ss') {
-	const o = {
-		'M+': this.getMonth() + 1, // month
-		'd+': this.getDate(), // day
-		'h+': this.getHours(), // hour
-		'm+': this.getMinutes(), // minute
-		's+': this.getSeconds(), // second
-		'q+': Math.floor((this.getMonth() + 3) / 3), // quarter
-		S: this.getMilliseconds() // millisecond
-	};
-	if (/(y+)/.test(format)) {
-		format = format.replace(
-			RegExp.$1,
-			`${this.getFullYear()}`.substr(4 - RegExp.$1.length)
-		);
-	}
-	Object.keys(o).forEach(key => {
-		if (new RegExp(`(${key})`).test(format)) {
-			format = format.replace(
-				RegExp.$1,
-				RegExp.$1.length === 1
-					? o[key]
-					: `00${o[key]}`.substr(`${o[key]}`.length)
-			);
-		}
-	});
-	return format;
-};
+		/**
+		 * 将字符串的时间格式化成指定文本
+		 * @param {format} 日期格式，比如 yyyy-MM-dd H:m:s => 2019-08-16 8:36:3
+		 * @returns {String} 返回对应时间格式的字符串
+		 */
+		String.prototype.timeFormat = function(format) {
+			let str = String(this);
+			let _str = str.replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '').replace(/-/g, '/')
+			let i = _str.indexOf('.')
+			if (i !== -1) {
+				_str = _str.slice(0, i)
+			}
+			let time;
+			time = new Date(_str);
+			if (time == 'Invalid Date') {
+				time = new Date(str)
+			}
+			// console.log(sseeeee)
+			let o = {
+				"M+": time.getMonth() + 1,
+				"d+": time.getDate(),
+				"H+": time.getHours(),
+				"m+": time.getMinutes(),
+				"s+": time.getSeconds(),
+				"q+": Math.floor((time.getMonth() + 3) / 3), //季度
+				"f+": time.getMilliseconds() //毫秒
+			};
+			if (/(y+)/.test(format))
+				format = format
+				.replace(RegExp.$1, time.getFullYear() + "")
+				.substr(4 - RegExp.$1.length);
+			for (let k in o) {
+				if (new RegExp("(" + k + ")").test(format))
+					format = format.replace(
+						RegExp.$1,
+						RegExp.$1.length == 1 ?
+						o[k] :
+						("00" + o[k]).substr(("" + o[k]).length)
+					);
+			}
+			return format;
+		};

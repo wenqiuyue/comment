@@ -80,17 +80,13 @@ export default {
       if(!this.searchData){
         return;
       }
-      if(this.isRouter){
-        console.log(1)
-        this.$router.push({
-          path:'/product-list',
-          query:{
-            searchData:this.searchData
-          }
-        })
-      }else{
-        this.$emit('freshData',this.searchData)
-      }
+      this.$router.push({
+        path:'/product-list',
+        query:{
+          searchData:this.searchData
+        }
+      })
+      this.$emit('freshData',this.searchData);
     },
     /**
      * 去往分类页面

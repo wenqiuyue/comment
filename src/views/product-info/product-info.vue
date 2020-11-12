@@ -1,37 +1,37 @@
 <template>
   <div class="product-info" v-loading="loading">
     <header-com></header-com>
-    <div class="p_product-info">
+    <div class="p_product-info" v-if="processDetails">
       <div class="p_product-info_top">
         <div class="p_info_t_container">
           <div class="left_container">
             <el-image
-              src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"
+              :src="processDetails.Cover"
               fit="cover">
             </el-image>
             <div class="left_c_info">
-              <h2 @click="handleHomePage">Paw Print Genetics</h2>
-              <h5>Reviews 837  •  Excellent</h5>
-              <rate :value="5" :isDisabled="true"></rate>
+              <h2 @click="handleHomePage">{{processDetails.Name}}</h2>
+              <h5>Reviews {{processDetails.CommentCount?processDetails.CommentCount:0}}  •  Excellent</h5>
+              <rate :value="processDetails.Rank" :isDisabled="true"></rate>
             </div>
           </div>
           <div class="right_container">
             <div class="r_c_operation_group">
               <div class="r_c_operation">
                 <svg-icon value="icon-rili" :size="1.5"></svg-icon>
-                <span class="r_c_num">2002</span>
+                <span class="r_c_num">{{processDetails.BirthYear}}</span>
               </div>
               <div class="r_c_operation">
                 <svg-icon value="icon-qian" :size="1.5"></svg-icon>
-                <span class="r_c_num">$60</span>
+                <span class="r_c_num">${{processDetails.Price}}</span>
               </div>
               <div class="r_c_operation">
                 <svg-icon value="icon-fenxiangzhuanqian" :size="1.5"></svg-icon>
                 <span class="r_c_num">Earn</span>
               </div>
               <div class="r_c_operation">
-                <svg-icon :value="likeProList.indexOf(1)==-1?'icon-xihuan1':'icon-xihuan'" :size="1.5" @click="handleLike"></svg-icon>
-                <span class="r_c_num">392</span>
+                <svg-icon :value="likeProList.indexOf(processDetails.Id)==-1?'icon-xihuan1':'icon-xihuan'" :size="1.5" @click="handleLike"></svg-icon>
+                <span class="r_c_num">{{processDetails.Likes}}</span>
               </div>
               <div class="r_c_operation">
                 <el-popover
@@ -43,7 +43,7 @@
                   </div>
                   <svg-icon value="icon-fenxiang" :size="1.5" slot="reference"></svg-icon>
                 </el-popover>
-                <span class="r_c_num r_c_num_share">92</span>
+                <span class="r_c_num r_c_num_share">{{processDetails.Shares}}</span>
               </div>
             </div>
             <el-button size="mini" type="success" plain @click="handleHomePage">Visit Homepage</el-button>
@@ -57,9 +57,9 @@
             <div class="left_main_introduce">
               <div class="introduce_title">
                 <svg-icon value="icon--1" :size="1.8"></svg-icon>
-                <h2>What is the Steam</h2>
+                <h2>What is the {{processDetails.Name}}</h2>
               </div>
-              <p :class="isEllipsis?'introduce_container c_ellipsis':'introduce_container'">The definitive resource for canine genetic health, providing canine genetic testing to both owners and breeders. We offer the highest standards in testing and customer service.The definitive resource for canine genetic health, providing canine genetic testing to both owners and breeders. We offer the highest standards in testing and customer service.</p>
+              <p :class="isEllipsis?'introduce_container c_ellipsis':'introduce_container'">{{processDetails.Description?processDetails.Description.replace(/&lt;.+?&gt;/g, ''):'No introduction'}}</p>
               <div class="more">
                 <span @click="isEllipsis=!isEllipsis">{{isEllipsis?'see more':'take back'}}</span>
                 <svg-icon :value="isEllipsis?'icon-z044':'icon-z045'" :size="0.6" :color="'#1a66ff'"></svg-icon>
@@ -71,99 +71,59 @@
                 <span class="w_text" @click="handleWriteReview">Write a review</span>
               </div>
               <el-rate
-                v-model="value"
+                v-model="rateValue"
                 :icon-classes="iconClasses"
                 void-icon-class="iconfont icon-pingfendengjiRating4"
                 allow-half
-                :colors="['#FF3722', '#FFCE00','#00B67A']">
+                :colors="['#FF3722', '#FFCE00','#00B67A']"
+                @change="rateChange"
+                >
               </el-rate>
             </div>
             <div class="left_main_review">
               <div class="left_main_review_title">
                 <svg-icon value="icon--1" :size="1.8"></svg-icon>
-                <h2> Reviews <span class="num">838</span>
+                <h2> Reviews <span class="num">{{processDetails.CommentCount?processDetails.CommentCount:0}}</span>
                 </h2>
               </div>
             </div>
-            <div class="left_main_review_card" v-for="(item,index) in 3" :key="index">
-              <div class="card_user">
-                <el-avatar size="large" src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"></el-avatar>
-                <span class="user_name">Elizabeth Lemke</span>
+            <div v-if="productComment && productComment.length>0">
+              <div class="left_main_review_card" v-for="(item,index) in productComment" :key="index">
+                <div class="card_user">
+                  <el-avatar size="large" :src="item.Icon"></el-avatar>
+                  <span class="user_name">{{item.Name}}</span>
+                </div>
+                <div class="score_date">
+                  <rate :value="item.Rank" :isDisabled="true"></rate>
+                  <span class="date">{{item.Time?item.Time.timeFormat('MM月dd'):'--:--'}}</span>
+                </div>
+                <p class="card_text" v-html="item.Content"></p>
+                <div class="card_bottom">
+                  <el-tooltip class="item" effect="dark" content="Useful" placement="top-start">
+                    <svg-icon value="icon-xihuan1" :size="1.3" :style="likeReviewList.indexOf(`${processDetails.Id}-${item.ComentId}`)==-1?'color:#aaa':'color:#f56c6c'" @click="handleUseFul(item,index)"></svg-icon>
+                  </el-tooltip>
+                  <span>({{item.Likes}})</span>
+                </div>
               </div>
-              <div class="score_date">
-                <rate :value="5" :isDisabled="true"></rate>
-                <span class="date">3月8日</span>
-              </div>
-              <p class="card_text">Cant Withdraw, communication thats not only ambiguous but often weeks after anything happens and no timetable for a return its a scam people. Probably even changed trust pilot name to Bank to avoid their reviews being found. I would love to be wrong about this but the balls in their court and they already left the building. But with the help of ( Georgebruce 00 at yahoo mail. ) 
-I was able to get back my all.
-              </p>
-              <div class="card_bottom">
-                <el-tooltip class="item" effect="dark" content="Useful" placement="top-start">
-                  <svg-icon value="icon-xihuan1" :size="1.3" :style="likeReviewList.indexOf('1-1')==-1?'color:#aaa':'color:#f56c6c'" @click="handleUseFul"></svg-icon>
-                </el-tooltip>
-                <span>(0)</span>
+              <div class="left_page" v-if="commentPage.pageNum>1">
+                <el-pagination
+                  layout="prev, pager, next"
+                  :page-count="commentPage.pageNum"
+                  :current-page="commentPage.pageIndex"
+                  :page-size="commentPage.pageSize"
+                  @current-change="getQueryProductCommentData($event)"
+                >
+                </el-pagination>
               </div>
             </div>
-            <div class="left_page">
-              <el-pagination
-                layout="prev, pager, next"
-                :total="50">
-              </el-pagination>
-            </div>
-            <!-- <div class="left_main-img" v-if="false">
-              <div class="img_title">
-                <svg-icon value="icon--1" :size="1.8"></svg-icon>
-                <h2>10 Images</h2>
-              </div>
-              <div>
-                <el-carousel indicator-position="outside">
-                  <el-carousel-item v-for="item in 4" :key="item">
-                    <el-image
-                      style="height:100%"
-                      src="https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg"
-                     >
-                    </el-image>
-                  </el-carousel-item>
-                </el-carousel>
-              </div>
-            </div> -->
-            <!-- <div class="left_main-informations" v-if="false">
-              <div class="informations_title">
-                <svg-icon value="icon--1" :size="1.8"></svg-icon>
-                <h2>Steam Informations</h2>
-              </div>
-              <div class="informations_card">
-                <el-row class="c_row">
-                  <el-col :span="6"><div class="card_left">Contacts</div></el-col>
-                  <el-col :span="18">
-                    <div class="card_right">
-                      <span v-for="item in 2" :key="item" class="c_r_span">
-                        <svg-icon value="icon-qian"></svg-icon>
-                        <span>Animal Health</span>
-                      </span>
-                    </div>
-                  </el-col>
-                </el-row>
-                <el-row class="c_row">
-                  <el-col :span="6"><div class="card_left">Infomations</div></el-col>
-                  <el-col :span="18">
-                    <div class="card_right">
-                      <span v-for="item in 7" :key="item" class="c_r_span">
-                        <svg-icon value="icon-qian"></svg-icon>
-                        <span>Animal Health</span>
-                      </span>
-                    </div>
-                  </el-col>
-                </el-row>
-              </div>
-            </div> -->
+            <empty v-else :tips="'No Reviews'" :paddingData="3"></empty>
           </el-col>
           <el-col :span="8" :xs="24">
             <div class="right_discount">
-              <h3>$60 one time fee</h3>
+              <h3>${{processDetails.Price}} one time fee</h3>
               <div class="r_d_main">
-                <span class="m_discount">优惠10％</span>
-                <span>优惠券：steam_coupon</span>
+                <span class="m_discount" v-if="processDetails.Discount">{{processDetails.Discount}}</span>
+                <span v-if="processDetails.Coupon">Coupon: {{processDetails.Coupon}}</span>
               </div>
               <div class="relevant_pro">
                 <el-dropdown trigger="click" placement="bottom-start">
@@ -189,7 +149,7 @@ I was able to get back my all.
               <ul class="comparison_list_ul">
                 <li v-for="(item,index) in comparisonList" :key="index">
                   <span>{{item.name}}</span>
-                  <svg-icon value="icon-shanchu" :size="1.6" @click="handleComparisonDel(index)"></svg-icon>
+                  <svg-icon value="icon-shanchu" :size="1.6" @click="handleComparisonDel(item)"></svg-icon>
                 </li>
               </ul>
               <div class="comparison_list_button">
@@ -199,14 +159,15 @@ I was able to get back my all.
                 </p>
               </div>  
             </div>
-            <div class="right_img">
-              <h3>10 Images</h3>
+            <div class="right_img" v-if="processDetails.Images && processDetails.Images.length>0">
+              <h3>{{processDetails.Images.length}} Images</h3>
               <div class="r_r_img">
                 <el-carousel indicator-position="outside">
-                  <el-carousel-item v-for="item in 4" :key="item">
+                  <el-carousel-item v-for="(item,index) in processDetails.Images" :key="index">
                     <el-image
-                      style="height:100%"
-                      src="https://cube.elemecdn.com/6/94/4d3ea53c084bad6931a56d5158a48jpeg.jpeg"
+                      style="height:100%;width:100%"
+                      :src="item"
+                      fit="contain"
                      >
                     </el-image>
                   </el-carousel-item>
@@ -214,48 +175,68 @@ I was able to get back my all.
               </div>
             </div>
             <div class="right_Informations">
-              <h3>Steam Informations</h3>
+              <h3>{{processDetails.Name}} Informations</h3>
               <div class="r_r_Informations">
                 <div class="c_row">
                   <div class="card_left">Contacts</div>
                     <div class="card_right">
-                      <span v-for="item in 2" :key="item" class="c_r_span">
-                        <svg-icon value="icon-qian"></svg-icon>
-                        <span>Animal Health</span>
+                      <span class="c_r_span">
+                        <svg-icon value="icon-youjian"></svg-icon>
+                        <span>Email</span>
+                      </span>
+                      <span class="c_r_span span_click" @click="handleHomePage">
+                        <svg-icon value="icon-gongsiwangzhi"></svg-icon>
+                        <span>{{processDetails.Url}}</span>
                       </span>
                     </div>
                 </div>
                 <div class="c_row">
                   <div class="card_left">Infomations</div>
                     <div class="card_right">
-                      <span v-for="item in 7" :key="item" class="c_r_span">
+                      <span class="c_r_span">
+                        <svg-icon value="icon-bianpinghuatubiaosheji-"></svg-icon>
+                        <span>Reviews (2)</span>
+                      </span>
+                      <span class="c_r_span">
                         <svg-icon value="icon-qian"></svg-icon>
-                        <span>Animal Health</span>
+                        <span>${{processDetails.Price}} one time fee</span>
+                      </span>
+                      <span class="c_r_span">
+                        <svg-icon value="icon-rili"></svg-icon>
+                        <span>Start in {{processDetails.BirthYear}}</span>
+                      </span>
+                      <span class="c_r_span">
+                        <svg-icon value="icon-xihuan"></svg-icon>
+                        <span>Likes ({{processDetails.Likes}})</span>
+                      </span>
+                      <span class="c_r_span" v-if="processDetails.Discount">
+                        <svg-icon value="icon-fenxiangzhuanqian"></svg-icon>
+                        <span>{{processDetails.Discount}}</span>
                       </span>
                     </div>
                 </div>
               </div>
             </div>
             <div class="right_scam">
-              <h3>Is a Steam Scam?</h3>
-              <div class="scam_tips">Do you think that Steam is a scam ? Please vote!</div>
+              <h3>Is a {{processDetails.Name}} Scam?</h3>
+              <div class="scam_tips">Do you think that {{processDetails.Name}} is a scam ? Please vote!</div>
               <div class="scam_button">
                 <el-button type="success" plain @click="handleVote(1)">
                   <div class="button_text">
                     <div>
                       <svg-icon value="icon-dui"></svg-icon>
-                      <span> NOT SCAM (327)</span>
+                      <span> NOT SCAM ({{processDetails.VoteY}})</span>
                     </div>
-                    <div>Steam is <strong>NOT</strong> a scam</div>
+                    <div>{{processDetails.Name}} is <strong>NOT</strong> a scam</div>
                   </div>
                 </el-button>
                 <el-button type="danger" plain @click="handleVote(2)">
                   <div class="button_text">
                     <div>
                       <svg-icon value="icon-icon1"></svg-icon>
-                      <span>SCAM (99)</span>
+                      <span>SCAM ({{processDetails.VoteN}})</span>
                     </div>
-                    <div>Steam is a scam</div>
+                    <div>{{processDetails.Name}} is a scam</div>
                   </div>
                 </el-button>
               </div>
@@ -274,35 +255,97 @@ export default {
     return{
       loading:false, //加载
       isEllipsis:true, //产品介绍是否是省略状态
-      value:3,
+      rateValue:null,
       iconClasses: ['iconfont icon-pingfendengjiRating4', 'iconfont icon-pingfendengjiRating4', 'iconfont icon-pingfendengjiRating4'],
       comparisonList:[], //产品比较列表
       processDetails:null, //产品详情
       likeProList:[], //喜欢产品列表
-      likeReviewList:[] //喜欢的评论
+      likeReviewList:[], //喜欢的评论
+      pid:null, //产品id
+      productComment:[], //产品评论
+      commentPage:{
+        pageIndex: 1,
+        pageSize: 5,
+        pageNum: 0,
+      }
     }
+  },
+  created(){
+    this.pid=this.$route.query.pid;
   },
   mounted(){
     this.getComparisonList();
     this.getLikeList();
     this.getLikeReviewList();
+    this.getInit();
   },
   methods:{
+    /**
+     * 评论分数进入写评论
+     */
+    rateChange(){
+      this.$router.push({
+        path:'/write-review',
+        query:{
+          rate:this.rateValue
+        }
+      })
+    },
     /**
      * 跳转产品页
      */
     handleHomePage(){
-      const url="https://www.baidu.com"
-      window.open("http://localhost:8080/#/check-page?url="+url);
+      window.open("http://localhost:8080/#/check-page?url="+this.processDetails.Url);
+    },
+    /**
+     * 产品详情数据初始化
+     */
+    getInit(){
+      this.loading=true;
+      const data={
+        Id:this.pid,
+        page:1,
+        pageCount:this.commentPage.pageSize
+      }
+      Promise.all([
+        this.$apiHttp.getProcessDetails({params:{Id:this.pid}}),
+        this.$apiHttp.getQueryProductComment({params:data})
+      ]).then((resp)=>{
+        if(resp[0].res==200 && resp[1].res==200){
+          this.processDetails=resp[0].data;
+          this.productComment=resp[1].data.data;
+          this.commentPage.pageNum=resp[1].data.TotalPage;
+          this.loading=false;
+        }
+      })
     },
     /**
      * 产品详情
      */
     getProcessDetailsData(){
       this.loading=true;
-      this.$apiHttp.getProcessDetails({Id:1}).then((resp)=>{
-        if(resp.res==0){
+      this.$apiHttp.getProcessDetails({params:{Id:this.pid}}).then((resp)=>{
+        if(resp.res==200){
           this.processDetails=resp.data
+        }
+        this.loading=false;
+      })
+    },
+    /**
+     * 产品评论
+     */
+    getQueryProductCommentData(page){
+      this.commentPage.pageIndex=page;
+      const data={
+        Id:this.pid,
+        page:this.commentPage.pageIndex,
+        pageCount:this.commentPage.pageSize
+      };
+      this.loading=true;
+      this.$apiHttp.getQueryProductComment({params:data}).then((resp)=>{
+        if(resp.res==200){
+          this.productComment=resp.data.data;
+          this.commentPage.pageNum=resp.data.TotalPage;
         }
         this.loading=false;
       })
@@ -312,28 +355,40 @@ export default {
      */
     handleVote(vote){
       const data={
-        ProId:1,
+        ProId: this.processDetails.Id,
         voteY:vote==1?1:null,
         voteN:vote==2?1:null
       }
-      this.$apiHttp.vote(data).then((resp)=>{
-        if(resp.res==0){
+      this.$apiHttp.vote({params:data}).then((resp)=>{
+        if(resp.res==200){
           this.$message({
             message: '投票成功',
             type: 'success'
           });
+          this.getProcessDetailsData();
         }
       })
     },
     /**
      * 评论点赞
      */
-    handleUseFul(){
-      if(this.likeReviewList.indexOf('1-1')!=-1){
+    handleUseFul(com,index){
+      //该评论点过赞，则退出
+       if(this.likeReviewList.indexOf(`${this.processDetails.Id}-${com.ComentId}`)!=-1){
         return;
       }
-      this.likeReviewList.push('1-1')
-      localStorage.setItem(types.LIKE_REVIEW, JSON.stringify(this.likeReviewList));
+      this.$apiHttp.fabulous({params:{Id:com.ComentId}}).then((resp)=>{
+        if(resp.res==200){
+          this.$message({
+            message: 'Comments like success',
+            type: 'success'
+          });
+          //评论点赞成功后，则将缓存评论数据
+          this.likeReviewList.push(`${this.processDetails.Id}-${com.ComentId}`);
+          localStorage.setItem(types.LIKE_REVIEW, JSON.stringify(this.likeReviewList));
+          this.productComment[index].Likes = this.productComment[index].Likes + 1;
+        }
+      })
     },
     /**
      * 获取点赞的评论
@@ -349,21 +404,22 @@ export default {
      * 喜欢
      */
     handleLike(){
-      if(this.likeProList.indexOf(1)!=-1){
+      if(this.likeProList.indexOf(this.processDetails.Id)!=-1){
         return;
       }
       const data={
-        proId:1
+        proId:this.processDetails.Id
       }
-      this.$apiHttp.fabulous(data).then((resp)=>{
-        if(resp.res==0){
+      this.$apiHttp.ProductLikes({params:data}).then((resp)=>{
+        if(resp.res==200){
           this.$message({
-            message: '点赞成功',
+            message: 'Like success',
             type: 'success'
           });
           this.likeProList.push(data.proId);
           //将点赞的产品存到本地
           localStorage.setItem(types.LIKE_PROID, JSON.stringify(this.likeProList));
+          this.processDetails.Likes=this.processDetails.Likes+1;
         }
       })
     },
@@ -380,8 +436,8 @@ export default {
     /**
      * 删除比较列表
      */
-    handleComparisonDel(index){
-      this.comparisonList=this.comparisonList.filter((m,ind) => ind!=index);
+    handleComparisonDel(pro){
+      this.comparisonList=this.comparisonList.filter((m,ind) => m.id!=pro.id);
       localStorage.setItem(types.PRODUCT_COMPARISON, JSON.stringify(this.comparisonList));
     },
     /**
@@ -401,12 +457,12 @@ export default {
       const idList=this.comparisonList.map((m)=>{
         return m.id
       })
-      if( idList.indexOf(1)!=-1 || this.comparisonList.length>=4){
+      if( idList.indexOf(this.processDetails.Id)!=-1 || this.comparisonList.length>=4){
         return;
       }
       const comparisonData={
-        name:"Steam",
-        id:1
+        name: this.processDetails.Name,
+        id: this.processDetails.Id
       }
       this.comparisonList.push(comparisonData)
       localStorage.setItem(types.PRODUCT_COMPARISON, JSON.stringify(this.comparisonList));
@@ -826,6 +882,14 @@ export default {
                 align-items: center;
                 span{
                   margin-left: 5px;
+                }
+              }
+              .span_click{
+                color: #4395ff;
+                border-bottom: 1px dashed #4395ff;
+                cursor: pointer;
+                &:hover{
+                  color: #60bf39;
                 }
               }
             }

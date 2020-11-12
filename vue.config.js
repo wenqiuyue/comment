@@ -2,6 +2,7 @@ module.exports = {
   lintOnSave: false,
   devServer:{
     // publicPath: "/",
+    host : "0.0.0.0",
     open:true,
     // proxy: {
 		// 	// 普通接口

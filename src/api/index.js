@@ -1,26 +1,17 @@
 import { fetchGet,fetchPost } from '../utils/request.js'
 
-/**
- * 获取一个项目
- */
-export function getAllRecentFilms (data) {
-  return fetchPost('/project/projectInformation.ashx',data)
-};
-export function getAllRecentFilmsGet (data) {
-  return fetchGet('/work/Directories/directoreisLoad.ashx',data)
-}
 
 /**
  * 首页热门评论
  */
-export function getQueryCommentInfo (data) {
-  return fetchPost('/Controller/QueryCommentInfo',data)
+export function getQueryHotComment (data) {
+  return fetchGet('/api/HotType/QueryHotComment',data)
 };
 /**
  * 首页热门分类
  */
-export function getQueryHotType () {
-  return fetchGet('/api/HotType/QueryHotType')
+export function getQueryHotType (data) {
+  return fetchGet('/api/HotType/QueryHotType',data)
 };
 /**
  * 搜索
@@ -29,16 +20,22 @@ export function querySearch (data) {
   return fetchGet('/api/HotType/Seach',data)
 };
 /**
- * 点赞
+ * 评论点赞
  */
 export function fabulous (data) {
-  return fetchPost('/Controller/Fabulous',data)
+  return fetchGet('/api/HotType/ClickLikes',data)
+};
+/**
+ * 产品点赞
+ */
+export function ProductLikes (data) {
+  return fetchGet('/api/HotType/ProductLikes',data)
 };
 /**
  * 投票
  */
 export function vote (data) {
-  return fetchPost('/Controller/Vote',data)
+  return fetchGet('/api/HotType/ClickLikes',data)
 };
 /**
  * 发布评论
@@ -50,5 +47,17 @@ export function postSubject (data) {
  * 产品详情
  */
 export function getProcessDetails (data) {
-  return fetchPost('/Controller/ProcessDetails',data)
+  return fetchGet('/api/HotType/QueryDetails',data)
+};
+/**
+ * 产品评论
+ */
+export function getQueryProductComment (data) {
+  return fetchGet('/api/HotType/QueryProductComment',data)
+};
+/**
+ * 分类列表
+ */
+export function getTypeList () {
+  return fetchGet('api/HotType/TypeList')
 };

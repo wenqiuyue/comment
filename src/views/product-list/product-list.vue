@@ -5,13 +5,13 @@
       <div class="p_product-list_top">
         <div class="p_l_t_container">
           <div class="return" v-if="!searchWord"><span><i class="el-icon-arrow-left"></i>Animals & Pets</span></div>
-          <h2>{{`${proList.length} result(s) for "${searchWord}"`}}</h2>
+          <h2>{{`${proList&&proList.length?proList.length:0} result(s) for "${searchWord}"`}}</h2>
           <h5>Find the right products for you and your internet business.</h5>
         </div>
       </div>
       <div class="p_product-list_container">
-        <div v-if="proList.length>0">
-          <div class="list_card" v-for="(item,index) in proList" :key="index" @click="handleProductInfo">
+        <div v-if="proList&&proList.length>0">
+          <div class="list_card" v-for="(item,index) in proList" :key="index" @click="handleProductInfo(item.Id)">
             <el-image
               :src="item.Cover"
               >
@@ -23,11 +23,11 @@
               <div class="l_c_r_score">
                 <rate
                   class="c_t_rate"
-                  :value="value"
+                  :value="item.Rank"
                   :isDisabled="true"
                 >
                 </rate>
-                <span class="score_num">836 reviews</span>
+                <span class="score_num">{{item.CommentCount}} reviews</span>
                 <el-tag type="primary" size="small" v-if="item.Price">${{item.Price}} one time fee</el-tag>
                 <el-tag type="success" size="small" v-if="item.Discount">{{item.Discount}}</el-tag>
               </div>
@@ -45,8 +45,6 @@
 export default {
   data(){
     return{
-      value:3,
-      iconClasses: ['iconfont icon-pingfendengjiRating4', 'iconfont icon-pingfendengjiRating4', 'iconfont icon-pingfendengjiRating4'],
       searchWord:null, //搜索的词
       loading:false, //加载
       proList:[] //产品列表数据
@@ -79,8 +77,13 @@ export default {
     /**
      * 查看产品详情
      */
-    handleProductInfo(){
-      this.$router.push('/product-info');
+    handleProductInfo(pid){
+      this.$router.push({
+        path:'/product-info',
+        query:{
+          pid:pid
+        }
+      });
     },
   }
 }

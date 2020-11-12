@@ -112,6 +112,11 @@ export default {
       }
     }
   },
+  created(){
+    if(this.$route.query.rate){
+      this.value=this.$route.query.rate - 0;
+    }
+  },
   methods:{
     /**
      * 提交评论表单

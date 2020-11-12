@@ -1,5 +1,5 @@
 <template>
-  <div class="empty">
+  <div class="empty" :style="`padding:${paddingData}rem`">
     <svg-icon value="icon-wushuju" :size="8"></svg-icon>
     <p>{{tips}}</p>
   </div>
@@ -11,13 +11,16 @@ export default {
     tips:{
       type:String,
       default:null
+    },
+    paddingData:{
+      type:Number,
+      default:5
     }
   }
 }
 </script>
 <style lang="less" scoped>
 .empty{
-  padding: 5rem;
   text-align: center;
   p{
     color: #aaaaaa;

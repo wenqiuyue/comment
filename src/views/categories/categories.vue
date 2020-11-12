@@ -1,5 +1,5 @@
 <template>
-<div class="categories">
+<div class="categories" v-loading="loading">
   <header-com></header-com>
   <div class="c_categories">
     <div class="categories_top">
@@ -14,17 +14,17 @@
           <div class="left_categories">
             <h3>View Category</h3>
             <ul>
-              <li v-for="(item,index) in 15" :key="index" @click="handleLeftCategory(index)">Beauty & Well-being</li>
+              <li v-for="(item,index) in typeList" :key="index" @click="handleLeftCategory(index)">{{item.Name}}</li>
             </ul>
           </div>
         </el-col>
         <el-col :span="16" :xs="24">
           <div class="right_categories">
-            <el-row :gutter="20" v-for="(item,index) in 15" :key="index" class="right_row" :id="index">
-              <el-col :span="8"><div class="r_left_categories"><span>Animals & Pets</span></div></el-col>
+            <el-row :gutter="20" v-for="(item,index) in typeList" :key="index" class="right_row" :id="index">
+              <el-col :span="8"><div class="r_left_categories"><span>{{item.Name}}</span></div></el-col>
               <el-col :span="16">
                 <div class="r_right_categories">
-                  <span v-for="item in 5" :key="item" @click="handleProductList">Animal Health</span>
+                  <span v-for="(citem,cindex) in item.info" :key="cindex" @click="handleProductList">{{citem.Name}}</span>
                 </div>
               </el-col>
             </el-row>
@@ -40,10 +40,26 @@
 export default {
   data(){
     return{
-
+      loading:false,
+      typeList:null
     }
   },
+  mounted(){
+    this.getTypeListData();
+  },
   methods:{
+    /**
+     * 获取分类列表
+     */
+    getTypeListData(){
+      this.loading=true;
+      this.$apiHttp.getTypeList().then((resp)=>{
+        if(resp.res==200){
+          this.typeList=resp.data
+        }
+      this.loading=false;
+      })
+    },
     /**
      * 点击左边的分类，右边定位
      */
@@ -90,6 +106,7 @@ export default {
     padding: 16px;
     max-width: 1056px;
     margin: 0 auto;
+    min-height: calc(100% - 210px);
     .left_categories{
       background: #ffffff;
       padding: 28px 24px;
@@ -165,6 +182,7 @@ export default {
       }
       .c_c_categories{
         padding: 0.5rem;
+        min-height: calc(100% - 158px);
         .right_categories{
           padding: 1.5rem 1rem;
           .right_row{
