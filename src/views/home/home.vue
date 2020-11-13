@@ -12,7 +12,7 @@
         </div>
         <h2 class="title_3">Browse products by category</h2>
         <div class="b_type">
-          <div class="type_card" v-for="(item,index) in hotType" :key="item.id">
+          <div class="type_card" v-for="(item,index) in hotType" :key="item.id" @click="handleProList(item)">
             <div class="type_card_icon">
               <svg-icon value="icon-lanlvtubiaozhizuomoban-03" :size="1.6"></svg-icon>
             </div>
@@ -75,6 +75,18 @@ export default {
     this.getQueryCommentTypeData();
   },
   methods:{
+    /**
+     * 去当前热门分类的产品列表
+     */
+    handleProList(item){
+      this.$router.push({
+        path:'/product-list',
+        query:{
+          Name:item.name,
+          Id:item.id
+        }
+      })
+    },
     /**
      * 查看评论中的产品详情
      */

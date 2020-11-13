@@ -126,7 +126,7 @@
                 <span v-if="processDetails.Coupon">Coupon: {{processDetails.Coupon}}</span>
               </div>
               <div class="relevant_pro">
-                <el-dropdown trigger="click" placement="bottom-start">
+                <el-dropdown trigger="click" placement="bottom-start" @command="handleTypeProductCommand">
                   <el-button type="product" plain>
                     <span class="button_text">
                       <span>Related products</span>
@@ -134,8 +134,7 @@
                     </span>
                   </el-button>
                   <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item>Test Sub</el-dropdown-item>
-                    <el-dropdown-item>Paw Print Genetics</el-dropdown-item>
+                    <el-dropdown-item v-for="(item,index) in processDetails.TypeProduct" :key="index" :command="item.Id">{{item.Name}}</el-dropdown-item>
                   </el-dropdown-menu>
                 </el-dropdown>
               </div>
@@ -195,7 +194,7 @@
                     <div class="card_right">
                       <span class="c_r_span">
                         <svg-icon value="icon-bianpinghuatubiaosheji-"></svg-icon>
-                        <span>Reviews (2)</span>
+                        <span>Reviews ({{processDetails.CommentCount}})</span>
                       </span>
                       <span class="c_r_span">
                         <svg-icon value="icon-qian"></svg-icon>
@@ -230,7 +229,7 @@
                     <div>{{processDetails.Name}} is <strong>NOT</strong> a scam</div>
                   </div>
                 </el-button>
-                <el-button type="danger" plain @click="handleVote(2)">
+                <el-button type="danger" plain @click="handleVote(0)">
                   <div class="button_text">
                     <div>
                       <svg-icon value="icon-icon1"></svg-icon>
@@ -281,20 +280,27 @@ export default {
   },
   methods:{
     /**
+     * 相关产品
+     */
+    handleTypeProductCommand(com){
+      window.open("http://localhost:8080/#/product-info?pid="+com);
+    },
+    /**
      * 评论分数进入写评论
      */
     rateChange(){
       this.$router.push({
         path:'/write-review',
         query:{
-          rate:this.rateValue
+          rate:this.rateValue,
+          proid:this.processDetails.Id
         }
       })
     },
     /**
      * 跳转产品页
      */
-    handleHomePage(){
+    handleHomePage(url){
       window.open("http://localhost:8080/#/check-page?url="+this.processDetails.Url);
     },
     /**
@@ -356,16 +362,22 @@ export default {
     handleVote(vote){
       const data={
         ProId: this.processDetails.Id,
-        voteY:vote==1?1:null,
-        voteN:vote==2?1:null
+        votes:vote
       }
       this.$apiHttp.vote({params:data}).then((resp)=>{
         if(resp.res==200){
-          this.$message({
-            message: '投票成功',
-            type: 'success'
-          });
-          this.getProcessDetailsData();
+          if(resp.data){
+            this.$message({
+              message: 'success',
+              type: 'success'
+            });
+            this.getProcessDetailsData();
+          }else{
+            this.$message({
+              message: 'You have voted',
+              type: 'warning'
+            });
+          }
         }
       })
     },
@@ -480,7 +492,7 @@ export default {
       this.$router.push({
         path:'/write-review',
         query:{
-          proid:1
+          proid:this.processDetails.Id
         }
       })
     },

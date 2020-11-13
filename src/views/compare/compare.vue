@@ -1,5 +1,5 @@
 <template>
-  <div class="compare">
+  <div class="compare" v-loading="loading">
     <header-com></header-com>
     <div class="c_compare">
       <div class="c_compare_main">
@@ -12,60 +12,28 @@
             <tbody>
               <tr>
                 <th class="m_th">Products</th>
-                <th v-for="item in 4" :key="item">
-                  <span>Steam</span>
+                <th v-for="(item,index) in compareData" :key="index">
+                  <span @click="handleHomePage(item.Url)">{{item.Name}}</span>
                 </th>
               </tr>
-              <tr>
-                <td class="m_th">COVER</td>
-                <td v-for="item in 4" :key="item">
+              <tr v-for="(item,index) in tableTr" :key="index">
+                <td :class="item.td=='Reviews' || item.td=='Likes' ? 'm_td_icon':'m_th'">
+                  <svg-icon v-if="item.td=='Reviews' || item.td=='Likes'" :value="item.icon"></svg-icon>
+                  <span>{{item.td}}</span>
+                </td>
+                <td v-for="(comitem,ind) in compareData" :key="ind">
                   <el-image
-                    src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"
+                    v-if="item.td=='COVER'"
+                    :src="comitem[item.key]"
                     fit="cover">
                   </el-image>
+                  <span v-else-if="item.td=='RELEASE TIME'">{{comitem[item.key]?comitem[item.key].timeFormat("yyyy-MM-dd"):'--:--'}}</span>
+                  <span v-else-if="item.td=='PRICE'">{{`$${comitem[item.key]?comitem[item.key]:0} one time fee`}}</span>
+                  <span v-else-if="item.td=='Commission'">{{comitem[item.key]?comitem[item.key]:'--'}}</span>
+                  <span v-else-if="index<5">{{comitem[item.key]?comitem[item.key]:'0'}}</span>
+                  <span v-else>{{getCust(item.Cust,comitem.Id)}}
+                  </span>
                 </td>
-              </tr>
-              <tr>
-                <td class="m_th">RELEASE TIME</td>
-                <td v-for="item in 4" :key="item">January 2002</td>
-              </tr>
-              <tr>
-                <td class="m_th">PRICE</td>
-                <td v-for="item in 4" :key="item">$60 one time fee</td>
-              </tr>
-              <tr>
-                <td class="m_td_icon">
-                  <svg-icon value="icon-bianpinghuatubiaosheji-"></svg-icon>
-                  <span>Reviews</span>
-                </td>
-                <td v-for="item in 4" :key="item">2</td>
-              </tr>
-              <tr>
-                <td class="m_td_icon">
-                  <svg-icon value="icon-xihuan"></svg-icon>
-                  <span>Likes</span>
-                </td>
-                <td v-for="item in 4" :key="item">391</td>
-              </tr>
-              <tr>
-                <td class="m_th">Commission</td>
-                <td v-for="item in 4" :key="item">10% recurring commissions</td>
-              </tr>
-              <!-- <tr>
-                <td class="m_th"></td>
-                <td colspan="4">&nbsp;</td>
-              </tr> -->
-              <tr>
-                <td class="m_th">Strong</td>
-                <td v-for="item in 4" :key="item">C</td>
-              </tr>
-              <tr>
-                <td class="m_th">Skill</td>
-                <td v-for="item in 4" :key="item">S</td>
-              </tr>
-              <tr>
-                <td class="m_th">Speed</td>
-                <td v-for="item in 4" :key="item">S</td>
               </tr>
             </tbody>
           </table>
@@ -76,7 +44,65 @@
   </div>
 </template>
 <script>
+import types from '../../commons/types';
 export default {
+  data(){
+    return{
+      loading:false,
+      compareData:null, //比较数据
+      tableTr:[
+        {td:"COVER",icon:'',key:'Cover'},
+        {td:"RELEASE TIME",icon:'',key:'Time'},
+        {td:"PRICE",icon:'',key:'Price'},
+        {td:"Reviews",icon:'icon-bianpinghuatubiaosheji-',key:'CommentCount'},
+        {td:"Likes",icon:'icon-xihuan',key:'Likes'},
+        {td:"Commission",icon:'',key:'Commissions'},
+      ]
+    }
+  },
+  mounted(){
+    this.compareProduct();
+  },
+  methods:{
+    getCust(cust,id){
+      const d=_.filter(cust, {Id:id})[0];
+      if(d){
+        return d.data
+      }else{
+        return '--'
+      }
+    },
+    /**
+     * 跳转产品页
+     */
+    handleHomePage(url){
+      window.open("http://localhost:8080/#/check-page?url="+url);
+    },
+    /**
+     * 获取比较数据 
+     * */
+    compareProduct(){
+      this.loading=true;
+      const pLIst = JSON.parse(localStorage.getItem(types.PRODUCT_COMPARISON));
+      const data = pLIst.map((m)=>{
+        return m.id
+      })
+      this.$apiHttp.compareToProduct(data).then((resp)=>{
+        if(resp.res==200){
+          this.compareData=resp.data.ProInfo;
+          resp.data.ComparInfo.forEach((m) => {
+						this.tableTr.push(
+							JSON.parse(
+								JSON.stringify(m)
+								.replace("Name", "td")
+							)
+					  );
+          })
+        }
+        this.loading=false;
+      })
+    }
+  }
   
 }
 </script>

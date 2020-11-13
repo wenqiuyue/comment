@@ -24,7 +24,7 @@
               <el-col :span="8"><div class="r_left_categories"><span>{{item.Name}}</span></div></el-col>
               <el-col :span="16">
                 <div class="r_right_categories">
-                  <span v-for="(citem,cindex) in item.info" :key="cindex" @click="handleProductList">{{citem.Name}}</span>
+                  <span v-for="(citem,cindex) in item.info" :key="cindex" @click="handleProductList(citem,item.Name)">{{citem.Name}}</span>
                 </div>
               </el-col>
             </el-row>
@@ -69,8 +69,15 @@ export default {
     /**
      * 根据类别查看产品列表
      */
-    handleProductList(){
-      this.$router.push('/product-list')
+    handleProductList(item,name){
+      this.$router.push({
+        path:'/product-list',
+        query:{
+          pName:name,
+          Name:item.Name,
+          Id:item.Id
+        }
+      })
     }
   }
 }

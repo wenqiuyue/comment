@@ -86,7 +86,7 @@ export default {
           searchData:this.searchData
         }
       })
-      this.$emit('freshData',this.searchData);
+      this.$emit('freshData',1,this.searchData);
     },
     /**
      * 去往分类页面

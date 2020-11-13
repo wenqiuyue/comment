@@ -4,8 +4,8 @@
     <div class="p_product-list">
       <div class="p_product-list_top">
         <div class="p_l_t_container">
-          <div class="return" v-if="!searchWord"><span><i class="el-icon-arrow-left"></i>Animals & Pets</span></div>
-          <h2>{{`${proList&&proList.length?proList.length:0} result(s) for "${searchWord}"`}}</h2>
+          <div class="return" v-if="!searchWord && typeData.pName" ><span @click="$router.back()"><i class="el-icon-arrow-left"></i>{{typeData.pName}}</span></div>
+          <h2>{{`${proList&&proList.length?proList.length:0} result(s) for "${searchWord?searchWord:typeData.Name}"`}}</h2>
           <h5>Find the right products for you and your internet business.</h5>
         </div>
       </div>
@@ -37,6 +37,16 @@
         </div>
         <empty v-else :tips="'暂无数据'"></empty>
       </div>
+      <div class="page">
+        <el-pagination
+          layout="prev, pager, next"
+          :page-count="pageData.pageNum"
+          :current-page="pageData.pageIndex"
+          :page-size="pageData.pageSize"
+          @current-change="handleChangePage($event)"
+        >
+        </el-pagination>
+      </div>
       <footer-com></footer-com>
     </div>
   </div>
@@ -47,29 +57,88 @@ export default {
     return{
       searchWord:null, //搜索的词
       loading:false, //加载
-      proList:[] //产品列表数据
+      proList:[], //产品列表数据
+      typeData:{
+        pName:null, //产品一级分类名称
+        Name:null, //二级分类数据
+        Id:null
+      },
+       pageData:{
+        pageIndex: 1,
+        pageSize: 10,
+        pageNum: 0,
+      }
     }
   },
   created(){
     this.searchWord=this.$route.query.searchData
+    this.typeData.pName=this.$route.query.pName
+    this.typeData.Name=this.$route.query.Name
+    this.typeData.Id=this.$route.query.Id
   },
   mounted(){
     if(this.searchWord){
       this.getQuerySearch();
+    }else{
+      this.getTypeToProductData();
     }
   },
   methods:{
     /**
+     * 分页切换
+     */
+    handleChangePage(page){
+      if(this.searchWord){
+        this.getQuerySearch(page);
+      }else{
+        this.getTypeToProductData(page);
+      }
+    },
+    /**
+     * 根据类型获取产品
+     */
+    getTypeToProductData(page){
+      this.loading=true;
+      if(page){
+        this.pageData.pageIndex=page;
+      }else{
+        this.pageData.pageIndex=1;
+      }
+      const data={
+        typeId:this.typeData.Id,
+        page:this.pageData.pageIndex,
+        pageCount:this.pageData.pageSize
+      }
+      this.$apiHttp.getTypeToProduct({params:data}).then((resp)=>{
+        if(resp.res==200){
+          this.proList=resp.data.query
+          this.pageData.pageNum=resp.data.pageCount;
+        }
+        this.loading=false;
+      })
+    },
+    /**
      * 获取搜索产品
      */
-    getQuerySearch(word){
+    getQuerySearch(page,word){
       if(word){
         this.searchWord=word;
       }
       this.loading=true;
-      this.$apiHttp.querySearch({ params:{work:this.searchWord}}).then((resp)=>{
+      if(page){
+        this.pageData.pageIndex=page;
+      }else{
+        this.pageData.pageIndex=1;
+      }
+      const data={
+        work:this.searchWord,
+        page:this.pageData.pageIndex,
+        pageCount:this.pageData.pageSize
+      }
+      this.$apiHttp.querySearch({ params:data}).then((resp)=>{
         if(resp.res==200){
-          this.proList=resp.data
+          this.proList=resp.data.query;
+          this.pageData.pageNum=resp.data.pageCount;
         }
         this.loading=false;
       })
@@ -178,6 +247,9 @@ export default {
             -webkit-box-orient: vertical;
           }
         }
+      }
+      .page{
+        background: #ffffff;
       }
     }
     @media all and (max-width: 1024px) {

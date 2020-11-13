@@ -1,17 +1,17 @@
 <template>
   <div class="write-review" v-loading="loading">
     <header-com></header-com>
-    <div class="w_write-review">
+    <div class="w_write-review" v-if="processDetails">
       <div class="write-review_top">
         <div class="t_container">
           <el-image
             style="width: 80px; height: 60px"
-            src="https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"
+            :src="processDetails.Cover"
             fit="cover">
           </el-image>
           <div class="t_c_right_info">
-            <h2 @click="handleReturn"><svg-icon value="icon-fanhui"></svg-icon> Paw Print Genetics</h2>
-            <h5>pawprintgenetics.com</h5>
+            <h2 @click="handleReturn"><svg-icon value="icon-fanhui"></svg-icon> {{processDetails.Name}}</h2>
+            <h5>{{processDetails.Url}}</h5>
           </div>
         </div>
       </div>
@@ -20,7 +20,7 @@
           <h2>Give your comments</h2>
           <el-rate
             class="r_rate"
-            v-model="value"
+            v-model="reviewForm.Rank"
             :icon-classes="iconClasses"
             void-icon-class="iconfont icon-pingfendengjiRating4"
             allow-half
@@ -40,7 +40,7 @@
             <el-form-item class="form_item" label="Upload Avatar:">
               <el-upload
                 class="upload-demo"
-                action="https://jsonplaceholder.typicode.com/posts/"
+                action="http://120.25.67.116:5251/api/HotType/CompareDatat"
                 :on-success="handleAvatarSuccess"
                 :show-file-list="false"
                 >
@@ -82,19 +82,19 @@ export default {
       }
     };
     return{
-      value:null,
       loading:false, //加载
       iconClasses: ['iconfont icon-pingfendengjiRating4', 'iconfont icon-pingfendengjiRating4', 'iconfont icon-pingfendengjiRating4'],
       reviewForm:{
         ProId:null, //产品id
-        AtcId:null, //文章信息Id
         Content:null, //评论内容
         Email:null, //邮箱
         Name:null, //用户名称
         Icon:null, //用户头像
+        Rank:null, //评分
         Code:null //验证码
       },
       codeValidate:null, //当前验证码
+      processDetails:null, //产品详情
       rules: {
         Content: [
           { required: true, message: 'Please enter the content', trigger: 'blur' },
@@ -117,7 +117,22 @@ export default {
       this.value=this.$route.query.rate - 0;
     }
   },
+  mounted(){
+    this.getProcessDetailsData();
+  },
   methods:{
+     /**
+     * 产品详情
+     */
+    getProcessDetailsData(){
+      this.loading=true;
+      this.$apiHttp.getProcessDetails({params:{Id:this.$route.query.proid}}).then((resp)=>{
+        if(resp.res==200){
+          this.processDetails=resp.data
+        }
+        this.loading=false;
+      })
+    },
     /**
      * 提交评论表单
      */
@@ -126,9 +141,9 @@ export default {
         if(valid){
           this.reviewForm.ProId=this.$route.query.proid;
           this.loading=true;
-          this.$apiHttp.postSubject(this.reviewForm).then((resp)=>{
+          this.$apiHttp.addCommentInfo(this.reviewForm).then((resp)=>{
             this.loading=false;
-            if(resp.res==0){
+            if(resp.res==200){
               this.$message({
                 message: 'Comment successful',
                 type: 'success'
@@ -154,7 +169,7 @@ export default {
       this.codeValidate=code;
     },
     handleAvatarSuccess(res, file){
-      this.reviewForm.Icon = URL.createObjectURL(file.raw);
+      this.reviewForm.Icon = res.msg;
       console.log(this.reviewForm.Icon)
     },
     /**

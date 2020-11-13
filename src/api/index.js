@@ -35,13 +35,13 @@ export function ProductLikes (data) {
  * 投票
  */
 export function vote (data) {
-  return fetchGet('/api/HotType/ClickLikes',data)
+  return fetchGet('/api/HotType/VoteClick',data)
 };
 /**
  * 发布评论
  */
-export function postSubject (data) {
-  return fetchPost('/Controller/PostSubject',data)
+export function addCommentInfo (data) {
+  return fetchPost('/api/HotType/AddCommentInfo',data)
 };
 /**
  * 产品详情
@@ -60,4 +60,16 @@ export function getQueryProductComment (data) {
  */
 export function getTypeList () {
   return fetchGet('api/HotType/TypeList')
+};
+/**
+ * 根据类型id查询产品
+ */
+export function getTypeToProduct (data) {
+  return fetchGet('api/HotType/TypeToProduct',data)
+};
+/**
+ * 产品比较
+ */
+export function compareToProduct (data) {
+  return fetchPost('/api/HotType/CompareToProduct',data)
 };
