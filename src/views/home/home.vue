@@ -91,6 +91,9 @@ export default {
      * 查看评论中的产品详情
      */
     handleProInfo(review){
+      if(!review.ProId){
+        return;
+      }
       this.$router.push({
         path:'/product-info',
         query:{
@@ -152,7 +155,7 @@ export default {
     background-size:cover;
     .c_banner{
       padding: 80px 24px 88px;
-      width: 38%;
+      width: 41%;
       margin-left: 20%;
       .title_1{
         margin-bottom: 12px;
@@ -261,6 +264,9 @@ export default {
             }
             .c_t_rate{
               margin-left: 8px;
+              /deep/.el-rate__icon{
+                font-size: 1.2rem;
+              }
               /deep/.icon-pingfendengjiRating4{
                 font-size: 1.2rem;
               }

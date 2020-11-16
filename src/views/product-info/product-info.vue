@@ -283,7 +283,7 @@ export default {
      * 相关产品
      */
     handleTypeProductCommand(com){
-      window.open("http://localhost:8080/#/product-info?pid="+com);
+      window.open("http://localhost:8080/product-info?pid="+com);
     },
     /**
      * 评论分数进入写评论
@@ -301,7 +301,7 @@ export default {
      * 跳转产品页
      */
     handleHomePage(url){
-      window.open("http://localhost:8080/#/check-page?url="+this.processDetails.Url);
+      window.open("http://localhost:8080/check-page?url="+this.processDetails.Url);
     },
     /**
      * 产品详情数据初始化
@@ -531,6 +531,9 @@ export default {
               }
             .left_c_info{
               margin-left: 24px;
+              /deep/.el-rate__icon{
+                font-size: 1.6rem;
+              }
               /deep/.icon-pingfendengjiRating4{
                 font-size: 1.6rem;
               }
@@ -705,6 +708,9 @@ export default {
           justify-content: space-between;
           align-items: center;
           padding: 13px 0;
+          /deep/.el-rate__icon{
+            font-size: 1.2rem;
+          }
           /deep/.icon-pingfendengjiRating4{
             font-size: 1.2rem;
           }
@@ -1093,6 +1099,9 @@ export default {
           }
           .score_date{
             padding: 0.875rem 0;
+            /deep/.el-rate__icon{
+              font-size: 1.2rem;
+            }
             /deep/.icon-pingfendengjiRating4{
               font-size: 1.2rem;
             }

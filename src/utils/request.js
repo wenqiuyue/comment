@@ -1,8 +1,9 @@
 import axios from 'axios'
 import { Message } from "element-ui";
-// axios.BaseUrl="http://120.25.67.116:700"
+
+axios.BaseUrl="http://120.25.67.116:5251"
 const instance = axios.create({
-  baseURL: "http://120.25.67.116:5251",
+  baseURL: axios.BaseUrl,
   timeout: 20000,
 })
 // 请求拦截器
@@ -66,5 +67,5 @@ export function fetchPost (url, params, config) {
       .catch(reject)
   })
 }
-
+export const url = axios.BaseUrl;
 export default instance

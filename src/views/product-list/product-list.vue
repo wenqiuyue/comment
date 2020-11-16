@@ -225,6 +225,9 @@ export default {
             display: flex;
             flex-direction: row;
             align-items: center;
+            /deep/.el-rate__icon{
+                font-size: 1.3rem;
+              }
             /deep/.icon-pingfendengjiRating4{
               font-size: 1.3rem;
             }
@@ -297,6 +300,9 @@ export default {
               flex-direction: row;
               flex-flow: row wrap;
               align-items: center;
+              /deep/.el-rate__icon{
+                font-size: 1rem;
+              }
               /deep/.icon-pingfendengjiRating4{
                 font-size: 1rem;
               }

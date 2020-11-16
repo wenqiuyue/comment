@@ -76,7 +76,7 @@ export default {
      * 跳转产品页
      */
     handleHomePage(url){
-      window.open("http://localhost:8080/#/check-page?url="+url);
+      window.open("http://localhost:8080/check-page?url="+url);
     },
     /**
      * 获取比较数据 

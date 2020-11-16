@@ -42,9 +42,11 @@
                 class="upload-demo"
                 action="http://120.25.67.116:5251/api/HotType/CompareDatat"
                 :on-success="handleAvatarSuccess"
+                :on-error="handleAvatarError"
+                :on-progress="handleAvatarProgress"
                 :show-file-list="false"
                 >
-                <el-avatar v-if="reviewForm.Icon" size="large" :src="reviewForm.Icon" fit="cover"></el-avatar>
+                <el-avatar v-loading="uploadLoading" element-loading-spinner="el-icon-loading" v-if="reviewForm.Icon" size="large" :src="url+reviewForm.Icon" fit="cover"></el-avatar>
                 <svg-icon v-else value="icon--" :size="2.5"></svg-icon>
               </el-upload>
             </el-form-item>
@@ -72,6 +74,7 @@
   </div>
 </template>
 <script>
+import {url} from '../../utils/request';
 export default {
   data(){
     var checkCode = (rule, value, callback) => {
@@ -83,13 +86,14 @@ export default {
     };
     return{
       loading:false, //加载
+      uploadLoading:false, //头像上传加载
       iconClasses: ['iconfont icon-pingfendengjiRating4', 'iconfont icon-pingfendengjiRating4', 'iconfont icon-pingfendengjiRating4'],
       reviewForm:{
         ProId:null, //产品id
         Content:null, //评论内容
         Email:null, //邮箱
         Name:null, //用户名称
-        Icon:null, //用户头像
+        Icon:'/Images/avt/b07fab35-4ccd-461c-ac7d-c9ca6370049b.png', //用户头像
         Rank:null, //评分
         Code:null //验证码
       },
@@ -104,6 +108,7 @@ export default {
         ],
         Email:[
           { required: true, message: 'Please enter the content', trigger: 'blur' },
+          { type: 'email', message: 'Please enter the correct email', trigger: ['blur'] }
         ],
         Code:[
           { required: true, message: 'Please enter the content', trigger: 'blur' },
@@ -112,9 +117,14 @@ export default {
       }
     }
   },
+  computed:{
+    url(){
+      return url;
+    }
+  },
   created(){
     if(this.$route.query.rate){
-      this.value=this.$route.query.rate - 0;
+      this.reviewForm.Rank=this.$route.query.rate - 0;
     }
   },
   mounted(){
@@ -143,7 +153,7 @@ export default {
           this.loading=true;
           this.$apiHttp.addCommentInfo(this.reviewForm).then((resp)=>{
             this.loading=false;
-            if(resp.res==200){
+            if(resp.res==200 && (resp.data==1 || resp.data==2)){
               this.$message({
                 message: 'Comment successful',
                 type: 'success'
@@ -155,6 +165,11 @@ export default {
               }).then(() => {
                 this.$router.back()
               }).catch(()=>{});
+            }else{
+              this.$message({
+                message: 'Comment failed',
+                type: 'error'
+              });
             }
           })
         }else{
@@ -168,9 +183,28 @@ export default {
     getCode(code){
       this.codeValidate=code;
     },
+    /**
+     * 头像上传时
+     */
+    handleAvatarProgress(){
+      this.uploadLoading=true;
+    },
+    /**
+     * 头像上传成功
+     */
     handleAvatarSuccess(res, file){
-      this.reviewForm.Icon = res.msg;
-      console.log(this.reviewForm.Icon)
+      this.reviewForm.Icon =res.msg;
+      this.uploadLoading=false;
+    },
+    /**
+     * 头像上传失败
+     */
+    handleAvatarError(){
+      this.$message({
+        message: 'Failed to upload Avatar',
+        type: 'error'
+      });
+      this.uploadLoading=false;
     },
     /**
      * 返回

@@ -144,12 +144,6 @@ export default {
         .r_left_categories{
           font-size: 1.17rem;
           color: #1b1b21;
-          span{
-            cursor: pointer;
-            &:hover{
-              color: #1989fa;
-            }
-          }
         }
         .r_right_categories{
           padding-bottom: 15px;
