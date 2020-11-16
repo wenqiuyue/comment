@@ -74,7 +74,6 @@
   </div>
 </template>
 <script>
-import {url} from '../../utils/request';
 export default {
   data(){
     var checkCode = (rule, value, callback) => {
@@ -119,7 +118,7 @@ export default {
   },
   computed:{
     url(){
-      return url;
+      return process.env.VUE_APP_BASE_URL;
     }
   },
   created(){
