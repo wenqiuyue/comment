@@ -14,6 +14,7 @@
           <div class="list_card" v-for="(item,index) in proList" :key="index" @click="handleProductInfo(item.Id)">
             <el-image
               :src="item.Cover"
+              fit="contain"
               >
             </el-image>
             <div class="list_card_right">
@@ -207,7 +208,7 @@ export default {
           flex-direction: row;
           .el-image{
             width: 100px;
-            height: 100px;
+            height: 65px;
           }
         }
         .list_card_right{

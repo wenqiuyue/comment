@@ -239,7 +239,7 @@ export default {
             font-size: 1.17em;
             cursor: pointer;
             &:hover{
-              border-bottom: 1px solid #1989fa;
+              text-decoration:underline;
               color: #1989fa;
             }
           }

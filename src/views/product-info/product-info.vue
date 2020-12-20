@@ -95,7 +95,7 @@
                 </div>
                 <div class="score_date">
                   <rate :value="item.Rank" :isDisabled="true"></rate>
-                  <span class="date">{{item.Time?item.Time.timeFormat('MM月dd'):'--:--'}}</span>
+                  <span class="date">{{item.Time?dateEnglish(item.Time):'--:--'}}</span>
                 </div>
                 <p class="card_text" v-html="item.Content"></p>
                 <div class="card_bottom">
@@ -217,7 +217,7 @@
               </div>
             </div>
             <div class="right_scam">
-              <h3>Is a {{processDetails.Name}} Scam?</h3>
+              <h3>Is {{processDetails.Name}} a Scam?</h3>
               <div class="scam_tips">Do you think that {{processDetails.Name}} is a scam ? Please vote!</div>
               <div class="scam_button">
                 <el-button type="success" plain @click="handleVote(1)">
@@ -249,6 +249,7 @@
 </template>
 <script>
 import types from '../../commons/types';
+import {dateEnglish} from '../../commons';
 export default {
   data(){
     return{
@@ -260,6 +261,7 @@ export default {
       processDetails:null, //产品详情
       likeProList:[], //喜欢产品列表
       likeReviewList:[], //喜欢的评论
+      voteList:[], //投票列表
       pid:null, //产品id
       productComment:[], //产品评论
       commentPage:{
@@ -277,8 +279,10 @@ export default {
     this.getLikeList();
     this.getLikeReviewList();
     this.getInit();
+    this.getVoteList();
   },
   methods:{
+    dateEnglish,
     /**
      * 相关产品
      */
@@ -357,9 +361,26 @@ export default {
       })
     },
     /**
+     * 获取投票
+     */
+    getVoteList(){
+      this.voteList=[];
+      const lVoteList=JSON.parse(localStorage.getItem(types.VOTE));
+      if(lVoteList){
+        this.voteList=lVoteList;
+      }
+    },
+    /**
      * 投票
      */
     handleVote(vote){
+      if(this.voteList.indexOf(this.processDetails.Id)!=-1){
+        this.$message({
+              message: 'You have voted',
+              type: 'warning'
+            });
+            return;
+      }
       const data={
         ProId: this.processDetails.Id,
         votes:vote
@@ -372,6 +393,8 @@ export default {
               type: 'success'
             });
             this.getProcessDetailsData();
+            this.voteList.push(this.processDetails.Id);
+            localStorage.setItem(types.VOTE, JSON.stringify(this.voteList));
           }else{
             this.$message({
               message: 'You have voted',
@@ -543,7 +566,7 @@ export default {
                 cursor: pointer;
                 &:hover{
                   color:#1989fa;
-                  border-bottom: 1px solid #1989fa;
+                  text-decoration:underline;
                 }
               }
               h5{
@@ -635,7 +658,7 @@ export default {
             color: #1a66ff;
             cursor: pointer;
             &:hover{
-              border-bottom: 1px solid  #1a66ff;
+              text-decoration:underline;
             }
           }
         }
@@ -657,7 +680,7 @@ export default {
             margin-left: 6px;
             cursor: pointer;
             &:hover{
-              border-bottom: 1px solid#1a66ff;
+              text-decoration:underline;
             }
           }
         }
@@ -717,6 +740,7 @@ export default {
           .date{
             color: #73738f;
             font-size: 0.875rem;
+            user-select: none;
           }
         }
         .card_text{
@@ -725,6 +749,7 @@ export default {
           border-bottom: 1px solid #e8e8eb;
           line-height: 1.5rem;
           color: #32323d;
+          user-select: none;
         }
         .card_bottom{
           display: flex;
@@ -736,6 +761,7 @@ export default {
           span{
             margin-left: 5px;
             color: #666666;
+            user-select: none;
           }
         }
       }

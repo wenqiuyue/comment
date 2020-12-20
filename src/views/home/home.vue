@@ -53,7 +53,7 @@
     <div class="be_heard">
       <h1 class="heard_title">Be heard</h1>
       <p class="heard_text">
-        Trustpilot is free and open to every company and consumer everywhere. Sharing your experiences helps others make better choices and companies up their game.
+        Comment is free and open to every company and consumer everywhere. Sharing your experiences helps others make better choices and companies up their game.
       </p>
       <div class="what_do"><el-button class="companies" type="gone" plain>For companies</el-button></div>
     </div>
@@ -241,7 +241,7 @@ export default {
       padding: 0 12px;
       display:-webkit-box;
       flex-direction: row;
-      width: calc(100% - 32px);
+      width: calc(100% - 24px);
       overflow-x: scroll;
       .r_r_r_card{
         display: flex;

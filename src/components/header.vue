@@ -138,6 +138,7 @@ export default {
         margin-left: 32px;
         display: flex;
         flex-direction: row;
+        width: 390px;
         button{
           margin-left: 5px;
         }
