@@ -28,8 +28,8 @@
                     fit="cover">
                   </el-image>
                   <span v-else-if="item.td=='RELEASE TIME'">{{comitem[item.key]?comitem[item.key].timeFormat("yyyy-MM-dd"):'--:--'}}</span>
-                  <span v-else-if="item.td=='PRICE'">{{`$${comitem[item.key]?comitem[item.key]:0} one time fee`}}</span>
-                  <span v-else-if="item.td=='Commission'">{{comitem[item.key]?comitem[item.key]:'--'}}</span>
+                  <span v-else-if="item.td=='PRICE'">{{comitem[item.key]?`$${comitem[item.key]} one time fee`:'--'}}</span>
+                  <!-- <span v-else-if="item.td=='Commission'">{{comitem[item.key]?comitem[item.key]:'--'}}</span> -->
                   <span v-else-if="index<5">{{comitem[item.key]?comitem[item.key]:'0'}}</span>
                   <span v-else>{{getCust(item.Cust,comitem.Id)}}
                   </span>
@@ -56,7 +56,7 @@ export default {
         {td:"PRICE",icon:'',key:'Price'},
         {td:"Reviews",icon:'icon-bianpinghuatubiaosheji-',key:'CommentCount'},
         {td:"Likes",icon:'icon-xihuan',key:'Likes'},
-        {td:"Commission",icon:'',key:'Commissions'},
+        // {td:"Commission",icon:'',key:'Commissions'},
       ]
     }
   },
@@ -151,7 +151,6 @@ export default {
             font-weight: normal;
             span{
               color:#409eff;
-              border-bottom: 1px dashed  #409eff;
               cursor: pointer;
               &:hover{
                 color: #60bf39;

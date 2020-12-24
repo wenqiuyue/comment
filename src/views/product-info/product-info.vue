@@ -59,8 +59,8 @@
                 <svg-icon value="icon--1" :size="1.8"></svg-icon>
                 <h2>What is the {{processDetails.Name}}</h2>
               </div>
-              <p :class="isEllipsis?'introduce_container c_ellipsis':'introduce_container'">{{processDetails.Description?processDetails.Description.replace(/&lt;.+?&gt;/g, ''):'No introduction'}}</p>
-              <div class="more">
+              <p :class="isEllipsis&&isMoreRow?'introduce_container c_ellipsis':'introduce_container'" ref="description">{{processDetails.Description?processDetails.Description.replace(/&lt;.+?&gt;/g, ''):'No introduction'}}</p>
+              <div class="more" v-if="isMoreRow">
                 <span @click="isEllipsis=!isEllipsis">{{isEllipsis?'see more':'take back'}}</span>
                 <svg-icon :value="isEllipsis?'icon-z044':'icon-z045'" :size="0.6" :color="'#1a66ff'"></svg-icon>
               </div>
@@ -120,7 +120,7 @@
           </el-col>
           <el-col :span="8" :xs="24">
             <div class="right_discount">
-              <h3>${{processDetails.Price}} one time fee</h3>
+              <h3 v-if="processDetails.Price">${{processDetails.Price}} one time fee</h3>
               <div class="r_d_main">
                 <span class="m_discount" v-if="processDetails.Discount">{{processDetails.Discount}}</span>
                 <span v-if="processDetails.Coupon">Coupon: {{processDetails.Coupon}}</span>
@@ -196,7 +196,7 @@
                         <svg-icon value="icon-bianpinghuatubiaosheji-"></svg-icon>
                         <span>Reviews ({{processDetails.CommentCount}})</span>
                       </span>
-                      <span class="c_r_span">
+                      <span class="c_r_span" v-if="processDetails.Price">
                         <svg-icon value="icon-qian"></svg-icon>
                         <span>${{processDetails.Price}} one time fee</span>
                       </span>
@@ -220,24 +220,20 @@
               <h3>Is {{processDetails.Name}} a Scam?</h3>
               <div class="scam_tips">Do you think that {{processDetails.Name}} is a scam ? Please vote!</div>
               <div class="scam_button">
-                <el-button type="success" plain @click="handleVote(1)">
-                  <div class="button_text">
+                  <div class="button_text_success" @click="handleVote(1)">
                     <div>
                       <svg-icon value="icon-dui"></svg-icon>
                       <span> NOT SCAM ({{processDetails.VoteY}})</span>
                     </div>
                     <div>{{processDetails.Name}} is <strong>NOT</strong> a scam</div>
                   </div>
-                </el-button>
-                <el-button type="danger" plain @click="handleVote(0)">
-                  <div class="button_text">
+                  <div class="button_text_fail" @click="handleVote(0)">
                     <div>
                       <svg-icon value="icon-icon1"></svg-icon>
                       <span>SCAM ({{processDetails.VoteN}})</span>
                     </div>
                     <div>{{processDetails.Name}} is a scam</div>
                   </div>
-                </el-button>
               </div>
             </div>
           </el-col>
@@ -268,7 +264,8 @@ export default {
         pageIndex: 1,
         pageSize: 5,
         pageNum: 0,
-      }
+      },
+      isMoreRow:false //产品介绍是否需要显示更多
     }
   },
   created(){
@@ -280,6 +277,12 @@ export default {
     this.getLikeReviewList();
     this.getInit();
     this.getVoteList();
+    setTimeout(()=>{
+      const row=this.$refs.description.offsetHeight/24
+      if(row>2){
+        this.isMoreRow=true;
+      }
+    },500)
   },
   methods:{
     dateEnglish,
@@ -555,10 +558,10 @@ export default {
             .left_c_info{
               margin-left: 24px;
               /deep/.el-rate__icon{
-                font-size: 1.6rem;
+                font-size: 1.8rem;
               }
               /deep/.icon-pingfendengjiRating4{
-                font-size: 1.6rem;
+                font-size: 1.8rem;
               }
               h2{
                 margin: 0;
@@ -640,6 +643,7 @@ export default {
           text-indent: 2em;
           color: #515174;
           line-height: 1.5rem;
+          word-break: break-all;
         }
         .c_ellipsis{
           display: -webkit-box;
@@ -657,6 +661,7 @@ export default {
             margin-right: 5px;
             color: #1a66ff;
             cursor: pointer;
+            user-select: none;
             &:hover{
               text-decoration:underline;
             }
@@ -665,7 +670,7 @@ export default {
       }
       .left_main_top{
         background: #ffffff;
-        padding: 22px 24px;
+        padding: 18px 24px;
         margin-bottom: 12px;
         display: flex;
         flex-direction: row;
@@ -684,8 +689,11 @@ export default {
             }
           }
         }
+        .el-rate{
+          height: auto;
+        }
         /deep/.icon-pingfendengjiRating4{
-          font-size: 1.4rem;
+          font-size: 2.4rem;
         }
       }
       .left_main_review{
@@ -871,6 +879,67 @@ export default {
               }
               &:nth-child(2){
                 margin-top: 5px;
+                word-wrap: break-word;
+              }
+            }
+          }
+          .button_text_success{
+            text-align: center;
+            color: #67c23a;
+            background: #f0f9eb;
+            border:1px solid #c2e7b0;
+            border-radius: 4px;
+            padding: 12px 10px;
+            cursor: pointer;
+            margin-bottom: 10px;
+            &:hover{
+              background: #67c23a;
+              color: #ffffff;
+            }
+             div{
+              &:nth-child(1){
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 16px;
+                span{
+                  margin-left: 5px;
+                }
+              }
+              &:nth-child(2){
+                margin-top: 5px;
+                word-break: break-all;
+                font-size: 13px;
+              }
+            }
+          }
+          .button_text_fail{
+            text-align: center;
+            color: #f56c6c;
+            background: #fef0f0;
+            border:1px solid #fbc4c4;
+            border-radius: 4px;
+            padding: 12px 10px;
+            cursor: pointer;
+            margin-bottom: 15px;
+            &:hover{
+              background: #f56c6c;
+              color: #ffffff;
+            }
+             div{
+              &:nth-child(1){
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 16px;
+                span{
+                  margin-left: 5px;
+                }
+              }
+              &:nth-child(2){
+                margin-top: 5px;
+                word-break: break-all;
+                font-size: 13px;
               }
             }
           }
@@ -930,7 +999,6 @@ export default {
               }
               .span_click{
                 color: #4395ff;
-                border-bottom: 1px dashed #4395ff;
                 cursor: pointer;
                 &:hover{
                   color: #60bf39;
@@ -1042,6 +1110,9 @@ export default {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            svg{
+              flex-shrink: 0;
+            }
           }
         }
       }

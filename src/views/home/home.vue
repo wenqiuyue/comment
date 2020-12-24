@@ -31,8 +31,9 @@
       <div class="r_r_title">Recent reviews</div>
       <div class="r_r_reviews" v-if="hotReview && hotReview.length>0">
         <div class="r_r_r_card" v-for="(item,index) in hotReview" :key="index">
-          <div class="r_r_r_c_card" v-for="(review,ind) in item" :key="ind" @click="handleProInfo(review)">
+          <div class="r_r_r_c_card" v-for="(review,ind) in item" :key="ind">
             <div class="c_title">
+              {{review.ComentId}}
               <el-avatar class="c_t_img" size="large" :src="review.Icon"></el-avatar>
               <rate
                 class="c_t_rate"
@@ -41,7 +42,7 @@
               >
               </rate>
             </div>
-            <p class="c_user">{{review.Name}} <span>reviewed</span> {{review.ProName}}</p>
+            <p class="c_user">{{review.Name}} <span class="rev">reviewed</span> <span @click="handleProInfo(review)" class="pro">{{review.ProName}}</span></p>
             <p class="c_text">
               {{review.Content}}
             </p>
@@ -51,18 +52,22 @@
       <empty v-else :tips="'No hot comments'" :paddingData="3"></empty>
     </div>
     <div class="be_heard">
-      <h1 class="heard_title">Be heard</h1>
+      <h1 class="heard_title">About</h1>
       <p class="heard_text">
-        Comment is free and open to every company and consumer everywhere. Sharing your experiences helps others make better choices and companies up their game.
+        Comment.com is committed to creating the most authentic review platform, where everyone can easily share the most authentic experience. Provide valuable reference for other users.
       </p>
-      <div class="what_do"><el-button class="companies" type="gone" plain>For companies</el-button></div>
+      <div class="what_do"><el-button class="companies" type="gone" plain @click="goCategories">Find out</el-button></div>
     </div>
     <footer-com></footer-com>
   </div>
 </div>
 </template>
 <script>
+import vueSeamlessScroll from 'vue-seamless-scroll'
 export default {
+  components:{
+    vueSeamlessScroll
+  },
   data(){
     return{
       loading:false, //加载
@@ -254,7 +259,6 @@ export default {
           margin-bottom: 10px;
           padding: 22px 15px 22px 22px;
           width: calc(100% - 37px);
-          cursor: pointer;
           .c_title{
             display: flex;
             flex-direction: row;
@@ -276,8 +280,11 @@ export default {
             color: #1b1b21;
             font-weight: 700;
             font-size: 0.75rem;
-            span{
+            .rev{
               color: #adadad;
+            }
+            .pro{
+              cursor: pointer;
             }
           }
           .c_text{
