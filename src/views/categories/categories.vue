@@ -4,7 +4,7 @@
   <div class="c_categories">
     <div class="categories_top">
       <div class="c_t_container">
-        <h2>explore comment.com Marketplace</h2>
+        <h2>Explore comment.com Marketplace</h2>
         <h5>Find the right products for you and your internet business.</h5>
       </div>
     </div>

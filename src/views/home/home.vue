@@ -33,7 +33,6 @@
         <div class="r_r_r_card" v-for="(item,index) in hotReview" :key="index">
           <div class="r_r_r_c_card" v-for="(review,ind) in item" :key="ind">
             <div class="c_title">
-              {{review.ComentId}}
               <el-avatar class="c_t_img" size="large" :src="review.Icon"></el-avatar>
               <rate
                 class="c_t_rate"
