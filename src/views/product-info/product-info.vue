@@ -8,6 +8,9 @@
             <el-image
               :src="processDetails.Cover"
               fit="cover">
+              <div slot="error" class="error_img_tips">
+                Failed to load 
+              </div>
             </el-image>
             <div class="left_c_info">
               <h2 @click="handleHomePage">{{processDetails.Name}}</h2>
@@ -47,7 +50,7 @@
               </div>
             </div>
             <el-button size="mini" type="success" plain @click="handleHomePage">Visit Homepage</el-button>
-            <el-button size="mini" type="primary" plain>Relevant Articles</el-button>
+            <!-- <el-button size="mini" type="primary" plain>Relevant Articles</el-button> -->
           </div>
         </div>
       </div>
@@ -168,6 +171,9 @@
                       :src="item"
                       fit="contain"
                      >
+                      <div slot="error" class="error_img_tips">
+                        Failed to load 
+                      </div>
                     </el-image>
                   </el-carousel-item>
                 </el-carousel>
@@ -290,7 +296,7 @@ export default {
      * 相关产品
      */
     handleTypeProductCommand(com){
-      window.open("http://localhost:8080/product-info?pid="+com);
+      window.open("http://120.25.67.116:8028/product-info?pid="+com);
     },
     /**
      * 评论分数进入写评论
@@ -308,7 +314,7 @@ export default {
      * 跳转产品页
      */
     handleHomePage(url){
-      window.open("http://localhost:8080/check-page?url="+this.processDetails.Url);
+      window.open("http://120.25.67.116:8028/check-page?url="+this.processDetails.Url);
     },
     /**
      * 产品详情数据初始化
@@ -532,6 +538,16 @@ export default {
 }
 .product-info{
   height: 100%;
+  /deep/.error_img_tips{
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    color: #c0c4cc;
+    vertical-align: middle;
+    background: #f5f7fa;
+  }
   .p_product-info{
     background: #f2f2f5;
     height: calc(100% - 72px);

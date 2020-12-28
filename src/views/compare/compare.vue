@@ -26,6 +26,9 @@
                     v-if="item.td=='COVER'"
                     :src="comitem[item.key]"
                     fit="cover">
+                    <div slot="error" class="error_img_tips">
+                      Failed to load 
+                    </div>
                   </el-image>
                   <span v-else-if="item.td=='RELEASE TIME'">{{comitem[item.key]?comitem[item.key].timeFormat("yyyy-MM-dd"):'--:--'}}</span>
                   <span v-else-if="item.td=='PRICE'">{{comitem[item.key]?`$${comitem[item.key]} one time fee`:'--'}}</span>
@@ -76,7 +79,7 @@ export default {
      * 跳转产品页
      */
     handleHomePage(url){
-      window.open("http://localhost:8080/check-page?url="+url);
+      window.open("http://120.25.67.116:8028/check-page?url="+url);
     },
     /**
      * 获取比较数据 
@@ -119,6 +122,16 @@ export default {
       max-width: 1200px;
       margin: 0 auto;
       padding: 24px 1.5rem;
+      /deep/.error_img_tips{
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        color: #c0c4cc;
+        vertical-align: middle;
+        background: #f5f7fa;
+      }
       .main_top{
         display: flex;
         align-items: center;

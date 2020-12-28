@@ -8,6 +8,9 @@
             style="width: 80px; height: 60px"
             :src="processDetails.Cover"
             fit="cover">
+            <div slot="error" class="error_img_tips">
+                Failed to load 
+            </div>
           </el-image>
           <div class="t_c_right_info">
             <h2 @click="handleReturn"><svg-icon value="icon-fanhui"></svg-icon> {{processDetails.Name}}</h2>
@@ -232,6 +235,16 @@ export default {
         display: flex;
         flex-direction: row;
         align-items: center;
+        /deep/.error_img_tips{
+          height: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 12px;
+          color: #c0c4cc;
+          vertical-align: middle;
+          background: #f5f7fa;
+        }
         .t_c_right_info{
           margin-left: 24px;
           h2{

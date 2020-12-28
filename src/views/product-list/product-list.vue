@@ -16,6 +16,9 @@
               :src="item.Cover"
               fit="contain"
               >
+               <div slot="error" class="error_img_tips">
+                  Failed to load 
+              </div>
             </el-image>
             <div class="list_card_right">
               <div>
@@ -209,6 +212,16 @@ export default {
           .el-image{
             width: 100px;
             height: 65px;
+          }
+          /deep/.error_img_tips{
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: #c0c4cc;
+            vertical-align: middle;
+            background: #f5f7fa;
           }
         }
         .list_card_right{

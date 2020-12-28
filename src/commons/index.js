@@ -2,9 +2,9 @@
  * 时间显示成英文,2020/12/1 (December 1, 2020)
  */
 export function dateEnglish(date){
-  const m=new Date(date).getMonth();
+  const m=new Date(date).getMonth()+1;
   const y=new Date(date).getFullYear();
-  const d=new Date(date).getDay();
+  const d=new Date(date).getDate();
   if(m==1){
     return `January ${d}, ${y}`
   }else if(m==2){
@@ -29,5 +29,7 @@ export function dateEnglish(date){
     return `November ${d}, ${y}`
   }else if(m==12){
     return `December ${d}, ${y}`
+  }else{
+    return '111'
   }
 }
