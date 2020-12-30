@@ -27,27 +27,54 @@
         </div>
       </div>
     </div>
-    <div class="recent_reviews">
+    <div class="recent_reviews pc">
       <div class="r_r_title">Recent reviews</div>
-      <div class="r_r_reviews" v-if="hotReview && hotReview.length>0">
-        <div class="r_r_r_card" v-for="(item,index) in hotReview" :key="index">
-          <div class="r_r_r_c_card" v-for="(review,ind) in item" :key="ind">
-            <div class="c_title">
-              <el-avatar class="c_t_img" size="large" :src="review.Icon"></el-avatar>
-              <rate
-                class="c_t_rate"
-                :value="review.Rank"
-                :isDisabled="true"
-              >
-              </rate>
+      <vue-seamless-scroll v-if="hotReview && hotReview.length>0" :data="hotReview" :class-option="defaultOption" class="seamless-warp">
+        <div class="r_r_reviews" >
+          <div class="r_r_r_card" v-for="(item,index) in hotReview" :key="index">
+            <div class="r_r_r_c_card" v-for="(review,ind) in item" :key="ind">
+              <div class="c_title">
+                {{review.ComentId}}
+                <el-avatar class="c_t_img" size="large" :src="review.Icon"></el-avatar>
+                <rate
+                  class="c_t_rate"
+                  :value="review.Rank"
+                  :isDisabled="true"
+                >
+                </rate>
+              </div>
+              <p class="c_user">{{review.Name}} <span class="rev">reviewed</span> <span @click="handleProInfo(review)" class="pro">{{review.ProName}}</span></p>
+              <p class="c_text">
+                {{review.Content}}
+              </p>
             </div>
-            <p class="c_user">{{review.Name}} <span class="rev">reviewed</span> <span @click="handleProInfo(review)" class="pro">{{review.ProName}}</span></p>
-            <p class="c_text">
-              {{review.Content}}
-            </p>
           </div>
         </div>
-      </div>
+      </vue-seamless-scroll>
+      <empty v-else :tips="'No hot comments'" :paddingData="3"></empty>
+    </div>
+    <div class="recent_reviews phone">
+      <div class="r_r_title">Recent reviews</div>
+        <div class="r_r_reviews" v-if="hotReview && hotReview.length>0">
+          <div class="r_r_r_card" v-for="(item,index) in hotReview" :key="index">
+            <div class="r_r_r_c_card" v-for="(review,ind) in item" :key="ind">
+              <div class="c_title">
+                {{review.ComentId}}
+                <el-avatar class="c_t_img" size="large" :src="review.Icon"></el-avatar>
+                <rate
+                  class="c_t_rate"
+                  :value="review.Rank"
+                  :isDisabled="true"
+                >
+                </rate>
+              </div>
+              <p class="c_user">{{review.Name}} <span class="rev">reviewed</span> <span @click="handleProInfo(review)" class="pro">{{review.ProName}}</span></p>
+              <p class="c_text">
+                {{review.Content}}
+              </p>
+            </div>
+          </div>
+        </div>
       <empty v-else :tips="'No hot comments'" :paddingData="3"></empty>
     </div>
     <div class="be_heard">
@@ -75,6 +102,20 @@ export default {
       hotType:null, //热门分类
     }
   },
+  computed: {
+    defaultOption () {
+      return {
+        step: 1, // 数值越大速度滚动越快
+        limitMoveNum: this.hotReview.length, // 开始无缝滚动的数据量 this.dataList.length
+        hoverStop: true, // 是否开启鼠标悬停stop
+        direction: 3, // 0向下 1向上 2向左 3向右
+        openWatch: true, // 开启数据实时监控刷新dom
+        singleHeight: 0, // 单步运动停止的高度(默认值0是无缝不停止的滚动) direction => 0/1
+        singleWidth: 0, // 单步运动停止的宽度(默认值0是无缝不停止的滚动) direction => 2/3
+        waitTime: 1000 // 单步运动停止的时间(默认值1000ms)
+      }
+    }
+},
   mounted(){
     this.getQueryCommentTypeData();
   },
@@ -234,7 +275,10 @@ export default {
   }
   .recent_reviews{
     background-color: rgb(220, 220, 230);
-    width: 100%;
+    overflow:hidden;
+    .seamless-warp{
+      height: 480px;
+    }
     .r_r_title{
       text-align: center;
       font-size: 1.25rem;
@@ -243,21 +287,27 @@ export default {
     }
     .r_r_reviews{
       padding: 0 12px;
-      display:-webkit-box;
+      display:flex;
       flex-direction: row;
-      width: calc(100% - 24px);
-      overflow-x: scroll;
+      width: 2160px;
+      &:last-child {
+        margin-right:-143px;
+      }
       .r_r_r_card{
         display: flex;
         flex-direction: column;
         padding-bottom: 15px;
         margin-right: 10px;
-        width: 25%;
+        width: 330px;
+        flex-shrink: 0;
         .r_r_r_c_card{
           background: #ffffff;
           margin-bottom: 10px;
           padding: 22px 15px 22px 22px;
-          width: calc(100% - 37px);
+          width: 290px;
+          &:hover{
+            
+          }
           .c_title{
             display: flex;
             flex-direction: row;
@@ -298,6 +348,13 @@ export default {
         }
       }
     }
+  }
+  .phone{
+    display: none;
+  }
+  .pc{
+    display: flex;
+    flex-direction: column;
   }
   .be_heard{
     background-color:rgb(245, 233, 247);
@@ -391,6 +448,13 @@ export default {
           }
         }
       }
+      .phone{
+        display: flex;
+        flex-direction: column;
+      }
+      .pc{
+        display: none;
+      }
       .recent_reviews{
         .r_r_title{
           font-size: 1.25rem;
@@ -398,7 +462,10 @@ export default {
         }
         .r_r_reviews{
           padding: 0 8px;
+          display:-webkit-box;
           width: calc(100% - 24px);
+          margin-right: 0 !important;
+          overflow-x: scroll;
           .r_r_r_card{
             padding-bottom: 0.8rem;
             margin-right: 0.5rem;
