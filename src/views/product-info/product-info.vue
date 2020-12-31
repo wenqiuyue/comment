@@ -7,7 +7,7 @@
           <div class="left_container">
             <el-image
               :src="processDetails.Cover"
-              fit="cover">
+              fit="contain">
               <div slot="error" class="error_img_tips">
                 Failed to load 
               </div>
@@ -33,7 +33,7 @@
                 <span class="r_c_num">Earn</span>
               </div>
               <div class="r_c_operation">
-                <svg-icon :value="likeProList.indexOf(processDetails.Id)==-1?'icon-xihuan1':'icon-xihuan'" :size="1.5" @click="handleLike"></svg-icon>
+                <svg-icon :value="likeProList.indexOf(processDetails.Id)==-1?'icon-xihuan1':'icon-xihuan'" :size="1.5" @click="handleLike" v-preventReClick></svg-icon>
                 <span class="r_c_num">{{processDetails.Likes}}</span>
               </div>
               <div class="r_c_operation">
@@ -103,7 +103,7 @@
                 <p class="card_text" v-html="item.Content"></p>
                 <div class="card_bottom">
                   <el-tooltip class="item" effect="dark" content="Useful" placement="top-start">
-                    <svg-icon value="icon-xihuan1" :size="1.3" :style="likeReviewList.indexOf(`${processDetails.Id}-${item.ComentId}`)==-1?'color:#aaa':'color:#f56c6c'" @click="handleUseFul(item,index)"></svg-icon>
+                    <svg-icon value="icon-xihuan1" :size="1.3" :style="likeReviewList.indexOf(`${processDetails.Id}-${item.ComentId}`)==-1?'color:#aaa':'color:#f56c6c'" @click="handleUseFul(item,index)" v-preventReClick></svg-icon>
                   </el-tooltip>
                   <span>({{item.Likes}})</span>
                 </div>
@@ -250,6 +250,7 @@
   </div>
 </template>
 <script>
+import preventReClick from '../../utils/plugins';
 import types from '../../commons/types';
 import {dateEnglish} from '../../commons';
 export default {
@@ -271,7 +272,8 @@ export default {
         pageSize: 5,
         pageNum: 0,
       },
-      isMoreRow:false //产品介绍是否需要显示更多
+      isMoreRow:false, //产品介绍是否需要显示更多
+      isClick:false //是否点击
     }
   },
   created(){
@@ -418,9 +420,10 @@ export default {
      */
     handleUseFul(com,index){
       //该评论点过赞，则退出
-       if(this.likeReviewList.indexOf(`${this.processDetails.Id}-${com.ComentId}`)!=-1){
+       if(this.likeReviewList.indexOf(`${this.processDetails.Id}-${com.ComentId}`)!=-1 || this.isClick){
         return;
       }
+      this.isClick=true;
       this.$apiHttp.fabulous({params:{Id:com.ComentId}}).then((resp)=>{
         if(resp.res==200){
           this.$message({
@@ -432,6 +435,7 @@ export default {
           localStorage.setItem(types.LIKE_REVIEW, JSON.stringify(this.likeReviewList));
           this.productComment[index].Likes = this.productComment[index].Likes + 1;
         }
+        this.isClick=false;
       })
     },
     /**
@@ -448,9 +452,10 @@ export default {
      * 喜欢
      */
     handleLike(){
-      if(this.likeProList.indexOf(this.processDetails.Id)!=-1){
+      if(this.likeProList.indexOf(this.processDetails.Id)!=-1 || this.isClick){
         return;
       }
+      this.isClick=true;
       const data={
         proId:this.processDetails.Id
       }
@@ -465,6 +470,7 @@ export default {
           localStorage.setItem(types.LIKE_PROID, JSON.stringify(this.likeProList));
           this.processDetails.Likes=this.processDetails.Likes+1;
         }
+        this.isClick=false;
       })
     },
     /**
@@ -609,6 +615,7 @@ export default {
                 flex-direction: column;
                 align-items: center;
                 .r_c_num{
+                  user-select: none;
                   font-size: 0.75rem;
                   margin-top: 3px;
                   color: #666666;
@@ -651,6 +658,7 @@ export default {
             color: #32323d;
             margin: 0;
             margin-left: 5px;
+            user-select: none;
           }
         }
         .introduce_container{
@@ -660,6 +668,7 @@ export default {
           color: #515174;
           line-height: 1.5rem;
           word-break: break-all;
+          user-select: none;
         }
         .c_ellipsis{
           display: -webkit-box;
@@ -699,6 +708,7 @@ export default {
             font-size: 0.875rem;
             color: #1a66ff;
             margin-left: 6px;
+            user-select: none;
             cursor: pointer;
             &:hover{
               text-decoration:underline;
