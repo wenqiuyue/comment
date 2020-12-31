@@ -27,14 +27,13 @@
         </div>
       </div>
     </div>
-    <div class="recent_reviews pc">
+    <div class="recent_reviews pc" @click="clickCard($event)">
       <div class="r_r_title">Recent reviews</div>
       <vue-seamless-scroll v-if="hotReview && hotReview.length>0" :data="hotReview" :class-option="defaultOption" class="seamless-warp">
         <div class="r_r_reviews" >
           <div class="r_r_r_card" v-for="(item,index) in hotReview" :key="index">
             <div class="r_r_r_c_card" v-for="(review,ind) in item" :key="ind">
               <div class="c_title">
-                {{review.ComentId}}
                 <el-avatar class="c_t_img" size="large" :src="review.Icon"></el-avatar>
                 <rate
                   class="c_t_rate"
@@ -43,7 +42,7 @@
                 >
                 </rate>
               </div>
-              <p class="c_user">{{review.Name}} <span class="rev">reviewed</span> <span @click="handleProInfo(review)" class="pro">{{review.ProName}}</span></p>
+              <p class="c_user">{{review.Name}} <span class="rev">reviewed</span> <span :data-pro="JSON.stringify(review)" :id="review.ComentId"  class="pro">{{review.ProName}}</span></p>
               <p class="c_text">
                 {{review.Content}}
               </p>
@@ -59,7 +58,6 @@
           <div class="r_r_r_card" v-for="(item,index) in hotReview" :key="index">
             <div class="r_r_r_c_card" v-for="(review,ind) in item" :key="ind">
               <div class="c_title">
-                {{review.ComentId}}
                 <el-avatar class="c_t_img" size="large" :src="review.Icon"></el-avatar>
                 <rate
                   class="c_t_rate"
@@ -129,6 +127,21 @@ export default {
         query:{
           Name:item.name,
           Id:item.id
+        }
+      })
+    },
+    clickCard(e){
+      if(!e.target.id){
+        return;
+      }
+      const item = JSON.parse(e.target.dataset.pro);
+      if(!item.ProId){
+        return;
+      }
+      this.$router.push({
+        path:'/product-info',
+        query:{
+          pid:item.ProId
         }
       })
     },
@@ -305,8 +318,11 @@ export default {
           margin-bottom: 10px;
           padding: 22px 15px 22px 22px;
           width: 290px;
+          transition: transform .6s,box-shadow .6s;
+          cursor: default;
           &:hover{
-            
+            transform: perspective(1px) scale(1.05);
+            box-shadow: 0 12px 20px 0 rgba(0,0,50,0.12);
           }
           .c_title{
             display: flex;
