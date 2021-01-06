@@ -207,14 +207,13 @@ export default {
   height: calc(100% - 72px);
   overflow: auto;
   .banner{
-    background: url("~@/assets/images/banner.png") no-repeat;
+    background: url("~@/assets/images/banner.jpg") no-repeat;
+    background-size:100% 600px;
     height: 600px;
-    width: 100%;
-    background-size:cover;
     .c_banner{
       padding: 80px 24px 88px;
       width: 41%;
-      margin-left: 20%;
+      margin-left: 18%;
       .title_1{
         margin-bottom: 12px;
       }
@@ -413,7 +412,7 @@ export default {
       height: calc(100% - 72px);
       overflow: auto;
       .banner{
-        background: url("~@/assets/images/banner.png") no-repeat;
+        background: url("~@/assets/images/banner.jpg") no-repeat;
         height: auto;
         .c_banner{
           padding: 1rem;
@@ -490,6 +489,12 @@ export default {
               margin-bottom: 0.5rem;
               padding: 1.1rem 0.5rem;
               width: calc(100% - 1rem);
+              transition: transform .6s;
+              cursor: default;
+              &:hover{
+                transform: perspective(0px) scale(1);
+                box-shadow: 0 12px 20px 0 rgba(0,0,50,0.12);
+              }
               .c_title{
                 .c_t_rate{
                   margin-left: 0.5rem;
