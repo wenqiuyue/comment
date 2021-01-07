@@ -4,8 +4,8 @@
       <div class="logo">
         <span class="l_logo" @click="goHome">
           <el-image
-            style="width: 11rem"
-            :src="require('../assets/logo1.png')"
+            style="width: 5rem"
+            :src="require('../assets/logo2.png')"
             fit="contain">
           </el-image>
         </span>
@@ -24,8 +24,8 @@
         <svg-icon value="icon-fanhui" :size="1.5" v-if="isShowSearch" @click="$router.back()"></svg-icon>
         <span @click="goHome">
           <el-image
-            style="width: 9rem"
-            :src="require('../assets/logo1.png')"
+            style="width: 5rem"
+            :src="require('../assets/logo2.png')"
             fit="contain">
           </el-image>
         </span>
