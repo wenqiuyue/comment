@@ -289,7 +289,7 @@ export default {
     background-color: rgb(220, 220, 230);
     overflow:hidden;
     .seamless-warp{
-      height: 480px;
+      // height: 480px;
     }
     .r_r_title{
       text-align: center;
@@ -372,7 +372,7 @@ export default {
     flex-direction: column;
   }
   .be_heard{
-    background-color:rgb(245, 233, 247);
+    background-color:rgba(253, 233, 234,0.7);
     padding: 88px 24px 80px;
     .heard_title{
       text-align: center;
