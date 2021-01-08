@@ -14,13 +14,13 @@
         <div class="b_type">
           <div class="type_card" v-for="(item,index) in hotType" :key="item.id" @click="handleProList(item)">
             <div class="type_card_icon">
-              <svg-icon value="icon-lanlvtubiaozhizuomoban-03" :size="1.6"></svg-icon>
+              <svg-icon value="icon-fuwuleixing" :size="1.6" :color="'#9AE5D6'"></svg-icon>
             </div>
             <div class="type_card_text">{{item.name}}</div>
           </div>
           <div class="type_card" @click="goCategories">
             <div class="type_card_icon">
-              <svg-icon value="icon-lanlvtubiaozhizuomoban-03" :size="1.6"></svg-icon>
+              <svg-icon value="icon-fuwuleixing" :size="1.6" :color="'#9AE5D6'"></svg-icon>
             </div>
             <div class="type_card_text">More</div>
           </div>
@@ -200,6 +200,7 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+@import '../../assets/style/style.less';
 .home{
   height: 100%;
 }
@@ -207,13 +208,14 @@ export default {
   height: calc(100% - 72px);
   overflow: auto;
   .banner{
-    background: url("~@/assets/images/banner.jpg") no-repeat;
-    background-size:100% 600px;
+    background: url("~@/assets/images/banner1.jpg") no-repeat;
     height: 600px;
+    width: 100%;
+    background-size:cover;
     .c_banner{
       padding: 80px 24px 88px;
-      width: 41%;
-      margin-left: 18%;
+      width: 605px;
+      margin-left: 5%;
       .title_1{
         margin-bottom: 12px;
       }
@@ -251,35 +253,46 @@ export default {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
+        flex-wrap: wrap;
         .type_card{
           cursor: pointer;
-          width: 16%;
-          background-color: white;
+          width: 105px;
+          height: 110px;
+          background-color: #7797C0;
           margin-bottom: 8px;
           box-shadow: 0 2px 2px 0 rgba(0,0,50,0.04);
           display: flex;
           flex-direction: column;
           align-items: center;
-          padding: 20px 5px 12px 5px;
+          justify-content: center;
+          padding: 0 5px;
+          border-radius: 5px;
           .type_card_text{
             font-size: 0.875rem;
-            line-height: 1rem;
-            color: #1b1b1b;
+            line-height: 1.2rem;
+            color: #ffffff;
             text-align: center;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             overflow: hidden;
             text-overflow: ellipsis;
             -webkit-box-orient: vertical;
-
+            font-weight: 600;
           }
           .type_card_icon{
             margin-bottom: 0.2rem;
           }
+            transition: all 0.8s ease-in-out;
+            -webkit-transition: all 0.8s ease-in-out;
+            -moz-transition: all 0.8s ease-in-out;
+            -o-transition: all 0.8s ease-in-out;
+
           &:hover{
-            .type_card_text{
-              color: #409eff;
-            }
+            transform: rotate(360deg);
+            -webkit-transform: rotate(360deg);
+            -moz-transform: rotate(360deg);
+            -o-transform: rotate(360deg);
+            -ms-transform: rotate(360deg);
           }
         }
       }
@@ -372,7 +385,7 @@ export default {
     flex-direction: column;
   }
   .be_heard{
-    background-color:rgba(253, 233, 234,0.7);
+    background-color:#DCE4EF;
     padding: 88px 24px 80px;
     .heard_title{
       text-align: center;
@@ -401,7 +414,7 @@ export default {
         color: #ffffff;
       }
       .el-button--gone{
-        background: rgb(245, 233, 247);
+        background: #DCE4EF;
         color: #000032;
       }
     }
@@ -412,7 +425,7 @@ export default {
       height: calc(100% - 72px);
       overflow: auto;
       .banner{
-        background: url("~@/assets/images/banner.jpg") no-repeat;
+        background: url("~@/assets/images/banner1.jpg") no-repeat;
         height: auto;
         .c_banner{
           padding: 1rem;
@@ -448,8 +461,7 @@ export default {
           .b_type{
             padding-top: 0.2rem;
             .type_card{
-              width: 17%;
-              margin-bottom: 0;
+              margin-bottom: 10px;
               box-shadow: 0 2px 2px 0 rgba(0,0,50,0.04);
               padding:0.5rem 0.2rem 0.2rem 0.2rem;
               .type_card_text{
