@@ -49,7 +49,7 @@
                 :on-progress="handleAvatarProgress"
                 :show-file-list="false"
                 >
-                <el-avatar v-loading="uploadLoading" element-loading-spinner="el-icon-loading" v-if="reviewForm.Icon" size="large" :src="url+reviewForm.Icon" fit="cover"></el-avatar>
+                <el-avatar v-loading="uploadLoading" element-loading-spinner="el-icon-loading" v-if="reviewForm.Icon" size="large" :src="`${url}${reviewForm.Icon}`" fit="cover"></el-avatar>
                 <svg-icon v-else value="icon--" :size="2.5"></svg-icon>
               </el-upload>
             </el-form-item>
@@ -95,7 +95,7 @@ export default {
         Content:null, //评论内容
         Email:null, //邮箱
         Name:null, //用户名称
-        Icon:'/Images/avt/b07fab35-4ccd-461c-ac7d-c9ca6370049b.png', //用户头像
+        Icon:'/Images/avt/67315db7-278e-479a-8067-f8549231128c.png', //用户头像
         Rank:null, //评分
         Code:null //验证码
       },
