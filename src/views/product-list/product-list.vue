@@ -267,6 +267,10 @@ export default {
       }
       .page{
         background: #ffffff;
+        .el-pagination{
+          max-width: 1056px;
+          margin: 0 auto;
+        }
       }
     }
     @media all and (max-width: 1024px) {
