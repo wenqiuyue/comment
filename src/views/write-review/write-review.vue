@@ -29,6 +29,14 @@
             allow-half
             :colors="['#FF3722', '#FFCE00','#00B67A']">
           </el-rate>
+          <h2>Comment title</h2>
+          <el-form-item prop="Title" style="margin-bottom:0">
+            <el-input
+              class="input_experience"
+              placeholder="Comment title"
+              v-model="reviewForm.Title">
+            </el-input>
+          </el-form-item>
           <h2>Tell us about your experience</h2>
           <el-form-item prop="Content">
             <el-input
@@ -92,12 +100,13 @@ export default {
       iconClasses: ['iconfont icon-pingfendengjiRating4', 'iconfont icon-pingfendengjiRating4', 'iconfont icon-pingfendengjiRating4'],
       reviewForm:{
         ProId:null, //产品id
+        Title:null, //标题
         Content:null, //评论内容
         Email:null, //邮箱
         Name:null, //用户名称
         Icon:'/Images/avt/67315db7-278e-479a-8067-f8549231128c.png', //用户头像
         Rank:null, //评分
-        Code:null //验证码
+        Code:null //验证码,
       },
       codeValidate:null, //当前验证码
       processDetails:null, //产品详情

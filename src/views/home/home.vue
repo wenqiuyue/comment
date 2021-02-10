@@ -43,6 +43,7 @@
                 </rate>
               </div>
               <p class="c_user">{{review.Name}} <span class="rev">reviewed</span> <span :data-pro="JSON.stringify(review)" :id="review.ComentId"  class="pro">{{review.ProName}}</span></p>
+              <p class="c_text_title">{{review.Title}}</p>
               <p class="c_text">
                 {{review.Content}}
               </p>
@@ -67,6 +68,7 @@
                 </rate>
               </div>
               <p class="c_user">{{review.Name}} <span class="rev">reviewed</span> <span @click="handleProInfo(review)" class="pro">{{review.ProName}}</span></p>
+              <p class="c_text_title">{{review.Title}}</p>
               <p class="c_text">
                 {{review.Content}}
               </p>
@@ -178,17 +180,18 @@ export default {
     getQueryCommentTypeData(){
       this.loading=true;
       Promise.all([
+        this.$apiHttp.getQueryHotComment({params:{pageCount:12}}),
         this.$apiHttp.getQueryHotType({params:{pageCount:3}}),
-        this.$apiHttp.getQueryHotComment({params:{pageCount:12}})
       ]).then((resp)=>{
-        if(resp[0].res == 200 && resp[1].res == 200){
-          if(resp[1].data){
-            this.hotReview = _.chunk(resp[1].data,2);
+        if(resp[0].res == 200){
+          if(resp[0].data){
+            this.hotReview = _.chunk(resp[0].data,2);
           }
-          this.hotType=resp[0].data;
         }
-        this.loading=false;
-      })
+        if(resp[1].res == 200){
+          this.hotType=resp[1].data;
+        }
+      }).finally(()=> this.loading=false);
     },
     /**
      * 查看分类
@@ -364,6 +367,15 @@ export default {
               cursor: pointer;
             }
           }
+          .c_text_title{
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            -webkit-box-orient: vertical;
+            margin-bottom: 5px;
+            font-weight: bold;
+          }
           .c_text{
             font-size: 0.875rem;
             display: -webkit-box;
@@ -372,6 +384,7 @@ export default {
             text-overflow: ellipsis;
             -webkit-box-orient: vertical;
             color: #1B1B21;
+            margin-top: 0;
           }
         }
       }
